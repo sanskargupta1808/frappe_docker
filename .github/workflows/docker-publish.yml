@@ -24,7 +24,7 @@ jobs:
         uses: docker/setup-buildx-action@v3
 
       - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
+        uses: docker/setup-qemu-action@v4
 
       - name: Read apps.json.b64
         run: echo "APPS_JSON_BASE64=$(cat apps.json.b64)" >> $GITHUB_ENV
