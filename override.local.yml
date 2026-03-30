@@ -1,0 +1,15 @@
+services:
+  backend:
+    image: custom:15
+  configurator:
+    image: custom:15
+  frontend:
+    image: custom:15
+  queue-long:
+    image: custom:15
+  queue-short:
+    image: custom:15
+  scheduler:
+    image: custom:15
+  websocket:
+    image: custom:15
