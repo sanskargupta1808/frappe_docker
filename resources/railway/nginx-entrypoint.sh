@@ -27,8 +27,8 @@ if [[ -z "$UPSTREAM_REAL_IP_RECURSIVE" ]]; then
   export UPSTREAM_REAL_IP_RECURSIVE=off
 fi
 if [[ -z "$FRAPPE_SITE_NAME_HEADER" ]]; then
-  echo 'FRAPPE_SITE_NAME_HEADER defaulting to $host'
-  export FRAPPE_SITE_NAME_HEADER='$host'
+  echo "FRAPPE_SITE_NAME_HEADER defaulting to \$host"
+  export FRAPPE_SITE_NAME_HEADER="\$host"
 fi
 if [[ -z "$PROXY_READ_TIMEOUT" ]]; then
   echo "PROXY_READ_TIMEOUT defaulting to 120"
