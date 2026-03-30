@@ -30,6 +30,11 @@ RUN export APP_INSTALL_ARGS="" && \
   echo "{}" > sites/common_site_config.json && \
   find apps -mindepth 1 -path "*/.git" | xargs rm -fr
 
+# Apply repo-stored overrides captured from the running container
+COPY --chown=frappe:frappe app_overrides/frappe/list_view.js /home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+COPY --chown=frappe:frappe app_overrides/erpnext/asset.js /home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+COPY --chown=frappe:frappe app_overrides/erpnext/fixed_asset_register.py /home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+
 FROM frappe/base:${FRAPPE_BRANCH} AS backend
 
 USER frappe
