@@ -40,6 +40,24 @@ COPY --chown=frappe:frappe app_overrides/hrms/overrides/employee_timesheet.py /h
 
 FROM frappe/base:${FRAPPE_BRANCH} AS backend
 
+USER root
+
+RUN apt-get update \
+  && apt-get install --no-install-recommends -y supervisor \
+  && rm -rf /var/lib/apt/lists/*
+
+RUN mkdir -p /templates/nginx /etc/nginx/snippets
+COPY resources/railway/nginx-template.conf /templates/nginx/railway.conf.template
+COPY resources/railway/nginx-entrypoint.sh /usr/local/bin/railway-nginx-entrypoint.sh
+COPY resources/railway/supervisord.conf /etc/supervisord.conf
+COPY resources/railway/entrypoint.sh /usr/local/bin/railway-entrypoint.sh
+COPY resources/railway/boot.sh /usr/local/bin/railway-boot.sh
+COPY resources/core/nginx/security_headers.conf /etc/nginx/snippets/security_headers.conf
+
+RUN chmod 755 /usr/local/bin/railway-entrypoint.sh /usr/local/bin/railway-nginx-entrypoint.sh \
+  && chmod 755 /usr/local/bin/railway-boot.sh \
+  && chmod 644 /templates/nginx/railway.conf.template /etc/nginx/snippets/security_headers.conf
+
 USER frappe
 
 COPY --from=builder --chown=frappe:frappe /home/frappe/frappe-bench /home/frappe/frappe-bench
@@ -51,6 +69,8 @@ VOLUME [ \
   "/home/frappe/frappe-bench/sites/assets", \
   "/home/frappe/frappe-bench/logs" \
 ]
+
+ENTRYPOINT ["/usr/local/bin/railway-boot.sh"]
 
 CMD [ \
   "/home/frappe/frappe-bench/env/bin/gunicorn", \
