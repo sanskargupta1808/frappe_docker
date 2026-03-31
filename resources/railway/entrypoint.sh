@@ -10,10 +10,10 @@ cd ${BENCH_DIR}
 
 mkdir -p ${SITES_DIR}
 if [ ! -f ${SITES_DIR}/common_site_config.json ]; then
-  echo '{}' > ${SITES_DIR}/common_site_config.json
+  echo '{}' >${SITES_DIR}/common_site_config.json
 fi
 
-ls -1 apps > ${SITES_DIR}/apps.txt
+ls -1 apps >${SITES_DIR}/apps.txt
 
 if [ -n "${DB_HOST:-}" ]; then
   ${BENCH} set-config -g db_host "${DB_HOST}"
@@ -61,7 +61,7 @@ if [ -n "${SITE_NAME:-}" ] && [ ! -d "${SITES_DIR}/${SITE_NAME}" ]; then
     --db-port "${DB_PORT_VALUE}" \
     --no-mariadb-socket
 
-  IFS=',' read -ra APPS <<< "${INSTALL_APPS}"
+  IFS=',' read -ra APPS <<<"${INSTALL_APPS}"
   for app in "${APPS[@]}"; do
     app=$(echo "${app}" | xargs)
     if [ -n "${app}" ]; then
