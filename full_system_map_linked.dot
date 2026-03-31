@@ -1,0 +1,462 @@
+digraph FullSystemMap {
+    rankdir=TB
+    graph [
+        fontname="Helvetica" fontsize=13
+        splines=spline nodesep=0.6 ranksep=1.4
+        bgcolor="#f5f5f5" compound=true
+    ]
+    node [fontname="Helvetica" fontsize=10 style="filled,rounded" shape=box margin="0.2,0.1"]
+    edge [fontname="Helvetica" fontsize=8 color="#666666"]
+
+    // =========================================================
+    // LAYER 1 — GLOBAL MASTERS
+    // =========================================================
+    subgraph cluster_L1 {
+        label="Layer 1 — Global Masters" style=filled fillcolor="#e8e8e8" color="#999999"
+        node [fillcolor="#d0d0d0"]
+        Company      [URL="http://erp.localhost:8080/app/company"]
+        Department   [URL="http://erp.localhost:8080/app/department"]
+        CostCenter   [label="Cost Center" URL="http://erp.localhost:8080/app/cost-center"]
+        Account      [URL="http://erp.localhost:8080/app/account"]
+        Currency     [URL="http://erp.localhost:8080/app/currency"]
+        FinanceBook  [label="Finance Book" URL="http://erp.localhost:8080/app/finance-book"]
+        FiscalYear   [label="Fiscal Year" URL="http://erp.localhost:8080/app/fiscal-year"]
+        HolidayList  [label="Holiday List" URL="http://erp.localhost:8080/app/holiday-list"]
+    }
+
+    // =========================================================
+    // LAYER 2 — PEOPLE MASTERS
+    // =========================================================
+    subgraph cluster_L2 {
+        label="Layer 2 — People Masters" style=filled fillcolor="#fef9e7" color="#f39c12"
+        node [fillcolor="#fdebd0"]
+        User         [URL="http://erp.localhost:8080/app/user"]
+        Role         [URL="http://erp.localhost:8080/app/role"]
+        UserPermission [label="User Permission" URL="http://erp.localhost:8080/app/user-permission"]
+        Customer     [URL="http://erp.localhost:8080/app/customer"]
+        Supplier     [URL="http://erp.localhost:8080/app/supplier"]
+        Contact      [URL="http://erp.localhost:8080/app/contact"]
+        Item         [URL="http://erp.localhost:8080/app/item"]
+    }
+
+    // =========================================================
+    // LAYER 3 — CRM
+    // =========================================================
+    subgraph cluster_crm {
+        label="Frappe CRM" style=filled fillcolor="#d6eaf8" color="#2980b9"
+        node [fillcolor="#d6eaf8"]
+
+        subgraph cluster_crm_setup {
+            label="CRM Setup" style=filled fillcolor="#c5dff8" color="#2980b9"
+            CRMLeadStatus   [label="Lead Status"   URL="http://erp.localhost:8080/app/crm-lead-status"]
+            CRMDealStatus   [label="Deal Status"   URL="http://erp.localhost:8080/app/crm-deal-status"]
+            CRMLeadSource   [label="Lead Source"   URL="http://erp.localhost:8080/app/crm-lead-source"]
+            CRMIndustry     [label="Industry"      URL="http://erp.localhost:8080/app/crm-industry"]
+            CRMTerritory    [label="Territory"     URL="http://erp.localhost:8080/app/crm-territory"]
+            CRMLostReason   [label="Lost Reason"   URL="http://erp.localhost:8080/app/crm-lost-reason"]
+            CRMProduct      [label="CRM Product"   URL="http://erp.localhost:8080/app/crm-product"]
+            CRMSLA          [label="SLA"           URL="http://erp.localhost:8080/app/crm-service-level-agreement"]
+            CRMHolidayList  [label="CRM Holiday"   URL="http://erp.localhost:8080/app/crm-holiday-list"]
+            CRMOrganization [label="Organization"  URL="http://erp.localhost:8080/app/frappe-crm/organizations"]
+            FCRMSettings    [label="FCRM Settings" URL="http://erp.localhost:8080/app/fcrm-settings"]
+        }
+
+        subgraph cluster_crm_docs {
+            label="CRM Documents" style=filled fillcolor="#d6eaf8" color="#2980b9"
+            CRMLead [label="CRM Lead" URL="http://erp.localhost:8080/app/frappe-crm/leads"]
+            CRMDeal [label="CRM Deal" URL="http://erp.localhost:8080/app/frappe-crm/deals"]
+        }
+
+        subgraph cluster_crm_activity {
+            label="CRM Activities" style=filled fillcolor="#e8f4fd" color="#2980b9"
+            CRMTask    [label="CRM Task"   URL="http://erp.localhost:8080/app/crm-task"]
+            FCRMNote   [label="Note"       URL="http://erp.localhost:8080/app/fcrm-note"]
+            CRMCallLog [label="Call Log"   URL="http://erp.localhost:8080/app/crm-call-log"]
+            CRMEmail   [label="Email"      URL="http://erp.localhost:8080/app/communication"]
+            CRMContacts [label="Contacts"  URL="http://erp.localhost:8080/app/frappe-crm/contacts"]
+            CRMDashboard [label="Dashboard" URL="http://erp.localhost:8080/app/frappe-crm/dashboard"]
+        }
+    }
+
+    // =========================================================
+    // LAYER 4 — HR
+    // =========================================================
+    subgraph cluster_hr {
+        label="HR Module" style=filled fillcolor="#d5f5e3" color="#1e8449"
+        node [fillcolor="#d5f5e3"]
+
+        subgraph cluster_hr_recruit {
+            label="Recruitment" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            StaffingPlan      [label="Staffing Plan"       URL="http://erp.localhost:8080/app/staffing-plan"]
+            JobRequisition    [label="Job Requisition"     URL="http://erp.localhost:8080/app/job-requisition"]
+            JobOpening        [label="Job Opening"         URL="http://erp.localhost:8080/app/job-opening"]
+            JobApplicant      [label="Job Applicant"       URL="http://erp.localhost:8080/app/job-applicant"]
+            Interview         [label="Interview"           URL="http://erp.localhost:8080/app/interview"]
+            InterviewFeedback [label="Interview Feedback"  URL="http://erp.localhost:8080/app/interview-feedback"]
+            JobOffer          [label="Job Offer"           URL="http://erp.localhost:8080/app/job-offer"]
+            AppointmentLetter [label="Appointment Letter"  URL="http://erp.localhost:8080/app/appointment-letter"]
+        }
+
+        Employee [URL="http://erp.localhost:8080/app/employee"]
+
+        subgraph cluster_hr_leave {
+            label="Leave" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            LeaveType              [label="Leave Type"              URL="http://erp.localhost:8080/app/leave-type"]
+            LeavePolicy            [label="Leave Policy"            URL="http://erp.localhost:8080/app/leave-policy"]
+            LeavePolicyAssignment  [label="Leave Policy Assignment" URL="http://erp.localhost:8080/app/leave-policy-assignment"]
+            LeaveAllocation        [label="Leave Allocation"        URL="http://erp.localhost:8080/app/leave-allocation"]
+            LeaveApplication       [label="Leave Application"       URL="http://erp.localhost:8080/app/leave-application"]
+            LeaveLedgerEntry       [label="Leave Ledger Entry"      URL="http://erp.localhost:8080/app/leave-ledger-entry"]
+            LeaveEncashment        [label="Leave Encashment"        URL="http://erp.localhost:8080/app/leave-encashment"]
+            CompensatoryLeaveRequest [label="Compensatory Leave"    URL="http://erp.localhost:8080/app/compensatory-leave-request"]
+        }
+
+        subgraph cluster_hr_attend {
+            label="Attendance & Shifts" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            ShiftType          [label="Shift Type"          URL="http://erp.localhost:8080/app/shift-type"]
+            ShiftAssignment    [label="Shift Assignment"    URL="http://erp.localhost:8080/app/shift-assignment"]
+            ShiftRequest       [label="Shift Request"       URL="http://erp.localhost:8080/app/shift-request"]
+            EmployeeCheckin    [label="Employee Checkin"    URL="http://erp.localhost:8080/app/employee-checkin"]
+            Attendance         [label="Attendance"          URL="http://erp.localhost:8080/app/attendance"]
+            AttendanceRequest  [label="Attendance Request"  URL="http://erp.localhost:8080/app/attendance-request"]
+        }
+
+        subgraph cluster_hr_perf {
+            label="Performance" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            KRA               [label="KRA"                URL="http://erp.localhost:8080/app/kra"]
+            AppraisalTemplate [label="Appraisal Template" URL="http://erp.localhost:8080/app/appraisal-template"]
+            AppraisalCycle    [label="Appraisal Cycle"    URL="http://erp.localhost:8080/app/appraisal-cycle"]
+            Goal              [label="Goal"               URL="http://erp.localhost:8080/app/goal"]
+            Appraisal         [label="Appraisal"          URL="http://erp.localhost:8080/app/appraisal"]
+        }
+
+        subgraph cluster_hr_lifecycle {
+            label="Lifecycle" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            EmployeeOnboarding   [label="Employee Onboarding"   URL="http://erp.localhost:8080/app/employee-onboarding"]
+            EmployeeTransfer     [label="Employee Transfer"     URL="http://erp.localhost:8080/app/employee-transfer"]
+            EmployeePromotion    [label="Employee Promotion"    URL="http://erp.localhost:8080/app/employee-promotion"]
+            EmployeeSeparation   [label="Employee Separation"   URL="http://erp.localhost:8080/app/employee-separation"]
+            FullFinalStatement   [label="Full & Final"          URL="http://erp.localhost:8080/app/full-and-final-statement"]
+            ExitInterview        [label="Exit Interview"        URL="http://erp.localhost:8080/app/exit-interview"]
+        }
+
+        subgraph cluster_hr_expense {
+            label="Expenses" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            EmployeeAdvance [label="Employee Advance" URL="http://erp.localhost:8080/app/employee-advance"]
+            ExpenseClaim    [label="Expense Claim"    URL="http://erp.localhost:8080/app/expense-claim"]
+        }
+    }
+
+    // =========================================================
+    // LAYER 5 — PAYROLL
+    // =========================================================
+    subgraph cluster_payroll {
+        label="Payroll Module" style=filled fillcolor="#fef9e7" color="#d68910"
+        node [fillcolor="#fef9e7"]
+
+        subgraph cluster_pay_setup {
+            label="Payroll Setup" style=filled fillcolor="#fdebd0" color="#d68910"
+            PayrollPeriod           [label="Payroll Period"            URL="http://erp.localhost:8080/app/payroll-period"]
+            IncomeTaxSlab           [label="Income Tax Slab"           URL="http://erp.localhost:8080/app/income-tax-slab"]
+            SalaryComponent         [label="Salary Component"          URL="http://erp.localhost:8080/app/salary-component"]
+            SalaryStructure         [label="Salary Structure"          URL="http://erp.localhost:8080/app/salary-structure"]
+            SalaryStructureAssignment [label="Salary Structure Assign" URL="http://erp.localhost:8080/app/salary-structure-assignment"]
+        }
+
+        subgraph cluster_pay_adhoc {
+            label="Ad-hoc Pay" style=filled fillcolor="#fdebd0" color="#d68910"
+            AdditionalSalary  [label="Additional Salary"  URL="http://erp.localhost:8080/app/additional-salary"]
+            EmployeeIncentive [label="Employee Incentive" URL="http://erp.localhost:8080/app/employee-incentive"]
+            RetentionBonus    [label="Retention Bonus"    URL="http://erp.localhost:8080/app/retention-bonus"]
+        }
+
+        subgraph cluster_pay_run {
+            label="Payroll Run" style=filled fillcolor="#fdebd0" color="#d68910"
+            PayrollEntry [label="Payroll Entry" URL="http://erp.localhost:8080/app/payroll-entry"]
+            SalarySlip   [label="Salary Slip"   URL="http://erp.localhost:8080/app/salary-slip"]
+        }
+    }
+
+    // =========================================================
+    // LAYER 6 — PROJECTS
+    // =========================================================
+    subgraph cluster_projects {
+        label="Projects Module" style=filled fillcolor="#fce4d6" color="#c0392b"
+        node [fillcolor="#fce4d6"]
+
+        subgraph cluster_proj_setup {
+            label="Project Setup" style=filled fillcolor="#f9cfc7" color="#c0392b"
+            ActivityType    [label="Activity Type"    URL="http://erp.localhost:8080/app/activity-type"]
+            ActivityCost    [label="Activity Cost"    URL="http://erp.localhost:8080/app/activity-cost"]
+            ProjectTemplate [label="Project Template" URL="http://erp.localhost:8080/app/project-template"]
+        }
+
+        subgraph cluster_proj_docs {
+            label="Project Documents" style=filled fillcolor="#fce4d6" color="#c0392b"
+            Project      [URL="http://erp.localhost:8080/app/project"]
+            Task         [URL="http://erp.localhost:8080/app/task"]
+            Timesheet    [URL="http://erp.localhost:8080/app/timesheet"]
+            SalesInvoice [label="Sales Invoice" URL="http://erp.localhost:8080/app/sales-invoice"]
+        }
+    }
+
+    // =========================================================
+    // LAYER 7 — ASSETS
+    // =========================================================
+    subgraph cluster_assets {
+        label="Asset Management" style=filled fillcolor="#e8daef" color="#6c3483"
+        node [fillcolor="#e8daef"]
+
+        subgraph cluster_asset_setup {
+            label="Asset Setup" style=filled fillcolor="#dcc6e0" color="#6c3483"
+            Location             [URL="http://erp.localhost:8080/app/location"]
+            AssetCategory        [label="Asset Category"         URL="http://erp.localhost:8080/app/asset-category"]
+            AssetMaintenanceTeam [label="Maintenance Team"       URL="http://erp.localhost:8080/app/asset-maintenance-team"]
+        }
+
+        subgraph cluster_asset_docs {
+            label="Asset Documents" style=filled fillcolor="#e8daef" color="#6c3483"
+            Asset                    [URL="http://erp.localhost:8080/app/asset"]
+            AssetDepreciationSchedule [label="Depreciation Schedule" URL="http://erp.localhost:8080/app/asset-depreciation-schedule"]
+            AssetMovement            [label="Asset Movement"         URL="http://erp.localhost:8080/app/asset-movement"]
+            AssetRepair              [label="Asset Repair"           URL="http://erp.localhost:8080/app/asset-repair"]
+            AssetMaintenance         [label="Asset Maintenance"      URL="http://erp.localhost:8080/app/asset-maintenance"]
+            AssetMaintenanceLog      [label="Maintenance Log"        URL="http://erp.localhost:8080/app/asset-maintenance-log"]
+            AssetValueAdjustment     [label="Value Adjustment"       URL="http://erp.localhost:8080/app/asset-value-adjustment"]
+            AssetCapitalization      [label="Asset Capitalization"   URL="http://erp.localhost:8080/app/asset-capitalization"]
+        }
+    }
+
+    // =========================================================
+    // ACCOUNTING SPINE
+    // =========================================================
+    subgraph cluster_accounting {
+        label="Accounting Spine" style=filled fillcolor="#fadbd8" color="#922b21"
+        node [fillcolor="#fadbd8"]
+        JournalEntry [label="Journal Entry" URL="http://erp.localhost:8080/app/journal-entry"]
+        PaymentEntry [label="Payment Entry" URL="http://erp.localhost:8080/app/payment-entry"]
+        GLEntry      [label="GL Entry"      URL="http://erp.localhost:8080/app/gl-entry"]
+    }
+
+    // =========================================================
+    // EDGES — L1 GLOBAL MASTERS
+    // =========================================================
+    Company -> Department
+    Company -> CostCenter
+    Company -> Account
+    Company -> FiscalYear
+    HolidayList -> ShiftType
+    HolidayList -> LeaveType
+    Currency -> IncomeTaxSlab
+    Currency -> SalaryStructure
+    FinanceBook -> AssetCategory
+    FinanceBook -> Asset
+
+    // =========================================================
+    // EDGES — L2 PEOPLE MASTERS
+    // =========================================================
+    User -> Role [label="has role"]
+    User -> UserPermission [label="row-level security"]
+    User -> Employee [label="user_id" color="#1e8449" style=bold]
+    User -> CRMLead [label="lead_owner" color="#2980b9"]
+    User -> CRMDeal [label="deal_owner" color="#2980b9"]
+    User -> LeaveApplication [label="leave_approver" color="#1e8449"]
+    User -> ExpenseClaim [label="expense_approver" color="#1e8449"]
+    User -> Interview [label="interviewer" color="#1e8449"]
+    User -> Project [label="project user" color="#c0392b"]
+    User -> CRMTask [label="assigned_to" color="#2980b9"]
+    Customer -> Project [label="customer" color="#c0392b" style=dashed]
+    Customer -> SalesInvoice [label="billed to" color="#c0392b" style=dashed]
+    Item -> Asset [label="item_code\n(Is Fixed Asset)" color="#6c3483"]
+    Supplier -> Asset [label="asset_owner" color="#6c3483" style=dashed]
+
+    // =========================================================
+    // EDGES — CRM SETUP → DOCUMENTS
+    // =========================================================
+    CRMLeadStatus -> CRMLead [label="status"]
+    CRMDealStatus -> CRMDeal [label="status"]
+    CRMLeadSource -> CRMLead [label="source"]
+    CRMLeadSource -> CRMDeal [label="source"]
+    CRMIndustry -> CRMLead [label="industry"]
+    CRMIndustry -> CRMDeal [label="industry"]
+    CRMTerritory -> CRMLead [label="territory"]
+    CRMTerritory -> CRMDeal [label="territory"]
+    CRMLostReason -> CRMLead [label="lost_reason"]
+    CRMLostReason -> CRMDeal [label="lost_reason"]
+    CRMProduct -> CRMLead [label="products table"]
+    CRMProduct -> CRMDeal [label="products table"]
+    CRMSLA -> CRMLead [label="sla"]
+    CRMSLA -> CRMDeal [label="sla"]
+    CRMHolidayList -> CRMSLA [label="holiday_list"]
+    CRMOrganization -> CRMDeal [label="organization"]
+    Contact -> CRMDeal [label="contacts table"]
+    FCRMSettings -> CRMLead [label="global config"]
+    FCRMSettings -> CRMDeal [label="global config"]
+
+    // =========================================================
+    // EDGES — CRM DOCUMENTS → ACTIVITIES
+    // =========================================================
+    CRMLead -> CRMTask [label="reference"]
+    CRMLead -> FCRMNote [label="reference"]
+    CRMLead -> CRMCallLog [label="reference"]
+    CRMLead -> CRMEmail [label="reference"]
+    CRMDeal -> CRMTask [label="reference"]
+    CRMDeal -> FCRMNote [label="reference"]
+    CRMDeal -> CRMCallLog [label="reference"]
+    CRMDeal -> CRMEmail [label="reference"]
+    CRMDeal -> CRMContacts [label="contacts tab"]
+    CRMDashboard -> CRMLead [label="analytics"]
+    CRMDashboard -> CRMDeal [label="analytics"]
+
+    // =========================================================
+    // EDGES — CRM CROSS MODULE
+    // =========================================================
+    CRMLead -> CRMDeal [label="Convert" style=bold color="#e74c3c" penwidth=2]
+    CRMDeal -> Customer [label="sync to ERPNext" style=dashed color="#e74c3c"]
+
+    // =========================================================
+    // EDGES — HR RECRUITMENT
+    // =========================================================
+    StaffingPlan -> JobRequisition [label="raises"]
+    JobRequisition -> JobOpening [label="creates"]
+    JobOpening -> JobApplicant [label="applied to"]
+    JobApplicant -> Interview [label="scheduled for"]
+    Interview -> InterviewFeedback [label="per interviewer"]
+    InterviewFeedback -> JobOffer [label="leads to"]
+    JobOffer -> AppointmentLetter [label="generates"]
+    JobOffer -> Employee [label="creates" style=bold color="#1e8449" penwidth=2]
+    JobOffer -> EmployeeOnboarding [label="triggers"]
+
+    // =========================================================
+    // EDGES — HR LEAVE
+    // =========================================================
+    LeaveType -> LeavePolicy [label="policy detail"]
+    LeavePolicy -> LeavePolicyAssignment [label="assigned via"]
+    Employee -> LeavePolicyAssignment [label="employee"]
+    LeavePolicyAssignment -> LeaveAllocation [label="auto-creates"]
+    LeaveAllocation -> LeaveApplication [label="balance used by"]
+    LeaveApplication -> LeaveLedgerEntry [label="auto-creates"]
+    LeaveApplication -> Attendance [label="leave_application"]
+    LeaveApplication -> SalarySlip [label="lwp days"]
+    CompensatoryLeaveRequest -> LeaveAllocation [label="creates"]
+    LeaveEncashment -> SalarySlip [label="via Additional Salary"]
+    Employee -> LeaveApplication [label="employee"]
+
+    // =========================================================
+    // EDGES — HR ATTENDANCE
+    // =========================================================
+    ShiftType -> ShiftAssignment [label="assigned via"]
+    Employee -> ShiftAssignment [label="employee"]
+    ShiftRequest -> ShiftAssignment [label="on approval"]
+    Employee -> EmployeeCheckin [label="employee"]
+    ShiftType -> EmployeeCheckin [label="shift (auto)"]
+    EmployeeCheckin -> Attendance [label="auto-creates"]
+    AttendanceRequest -> Attendance [label="regularizes"]
+    Employee -> Attendance [label="employee"]
+    Attendance -> SalarySlip [label="payment_days"]
+
+    // =========================================================
+    // EDGES — HR PERFORMANCE
+    // =========================================================
+    KRA -> AppraisalTemplate [label="template goal"]
+    AppraisalTemplate -> AppraisalCycle [label="used in"]
+    Employee -> AppraisalCycle [label="appraisee"]
+    AppraisalCycle -> Goal [label="goals set in"]
+    Goal -> Appraisal [label="scored in"]
+    AppraisalCycle -> Appraisal [label="generates"]
+
+    // =========================================================
+    // EDGES — HR LIFECYCLE
+    // =========================================================
+    Employee -> EmployeeOnboarding [label="employee"]
+    Employee -> EmployeeTransfer [label="employee"]
+    Employee -> EmployeePromotion [label="employee"]
+    Employee -> EmployeeSeparation [label="employee"]
+    EmployeeSeparation -> FullFinalStatement [label="triggers"]
+    EmployeeSeparation -> ExitInterview [label="triggers"]
+    FullFinalStatement -> Asset [label="asset return" color="#6c3483" style=dashed]
+
+    // =========================================================
+    // EDGES — HR EXPENSES
+    // =========================================================
+    Employee -> EmployeeAdvance [label="employee"]
+    Employee -> ExpenseClaim [label="employee"]
+    EmployeeAdvance -> ExpenseClaim [label="advance settled in"]
+    ExpenseClaim -> JournalEntry [label="on submit" color="#922b21"]
+    ExpenseClaim -> Project [label="project" color="#c0392b" style=dashed]
+    ExpenseClaim -> Task [label="task" color="#c0392b" style=dashed]
+
+    // =========================================================
+    // EDGES — PAYROLL
+    // =========================================================
+    SalaryComponent -> SalaryStructure [label="earnings/deductions"]
+    SalaryStructure -> SalaryStructureAssignment [label="assigned via"]
+    Employee -> SalaryStructureAssignment [label="employee"]
+    IncomeTaxSlab -> SalaryStructureAssignment [label="tax slab"]
+    PayrollPeriod -> PayrollEntry [label="period"]
+    SalaryStructureAssignment -> PayrollEntry [label="used by"]
+    AdditionalSalary -> SalarySlip [label="pulled in"]
+    EmployeeIncentive -> SalarySlip [label="pulled in"]
+    RetentionBonus -> SalarySlip [label="pulled in"]
+    PayrollEntry -> SalarySlip [label="creates" style=bold color="#d68910" penwidth=2]
+    Employee -> SalarySlip [label="employee"]
+    Department -> PayrollEntry [label="filter"]
+    CostCenter -> PayrollEntry [label="cost_center"]
+    SalarySlip -> JournalEntry [label="on submit" color="#922b21"]
+    JournalEntry -> PaymentEntry [label="bank payment"]
+    JournalEntry -> GLEntry [label="creates"]
+
+    // =========================================================
+    // EDGES — PROJECTS
+    // =========================================================
+    ActivityType -> ActivityCost [label="rates per employee"]
+    ActivityCost -> Timesheet [label="fetches rates"]
+    Employee -> ActivityCost [label="employee"]
+    ProjectTemplate -> Project [label="creates tasks from"]
+    Project -> Task [label="has tasks"]
+    Task -> Task [label="parent_task" style=dashed]
+    Employee -> Timesheet [label="employee"]
+    Project -> Timesheet [label="parent_project"]
+    Task -> Timesheet [label="timesheet detail"]
+    Timesheet -> SalarySlip [label="timesheet costing" color="#d68910" style=dashed]
+    Timesheet -> SalesInvoice [label="billable hours" color="#c0392b"]
+    SalesInvoice -> JournalEntry [label="on submit" color="#922b21"]
+
+    // =========================================================
+    // EDGES — ASSETS
+    // =========================================================
+    AssetCategory -> Asset [label="asset_category"]
+    Location -> Asset [label="location"]
+    Employee -> Asset [label="custodian" color="#1e8449" style=dashed]
+    Department -> Asset [label="department" style=dashed]
+    CostCenter -> Asset [label="cost_center" style=dashed]
+    AssetMaintenanceTeam -> AssetMaintenance [label="maintenance_team"]
+    Asset -> AssetDepreciationSchedule [label="auto on submit"]
+    AssetDepreciationSchedule -> JournalEntry [label="monthly posting" color="#922b21"]
+    Asset -> AssetMovement [label="asset"]
+    AssetMovement -> Employee [label="to_employee" color="#1e8449" style=dashed]
+    AssetMovement -> Location [label="target_location"]
+    Asset -> AssetRepair [label="asset"]
+    AssetRepair -> JournalEntry [label="if capitalized" color="#922b21"]
+    Asset -> AssetMaintenance [label="asset"]
+    AssetMaintenance -> AssetMaintenanceLog [label="auto per task"]
+    Asset -> AssetValueAdjustment [label="asset"]
+    AssetValueAdjustment -> JournalEntry [label="on submit" color="#922b21"]
+    Asset -> AssetCapitalization [label="target_asset"]
+
+    // =========================================================
+    // EDGES — ACCOUNTING SPINE
+    // =========================================================
+    Account -> JournalEntry [label="accounts table"]
+    CostCenter -> JournalEntry [label="dimension"]
+    Department -> JournalEntry [label="dimension"]
+    Project -> JournalEntry [label="dimension" color="#c0392b" style=dashed]
+
+    // =========================================================
+    // EDGES — CROSS MODULE
+    // =========================================================
+    CostCenter -> SalarySlip [label="via SSA" color="#d68910" style=dashed]
+    CostCenter -> ExpenseClaim [label="cost_center" color="#1e8449" style=dashed]
+    Department -> Employee [label="department"]
+    Department -> SalarySlip [label="via Payroll Entry" color="#d68910" style=dashed]
+}

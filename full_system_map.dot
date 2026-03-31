@@ -1,0 +1,392 @@
+digraph FullSystemMap {
+    rankdir=TB
+    graph [
+        fontname="Helvetica" fontsize=13
+        splines=ortho nodesep=0.6 ranksep=1.4
+        bgcolor="#f5f5f5" compound=true
+    ]
+    node [fontname="Helvetica" fontsize=10 style="filled,rounded" shape=box margin="0.2,0.1"]
+    edge [fontname="Helvetica" fontsize=8 color="#666666"]
+
+    // =========================================================
+    // LAYER 1 — GLOBAL MASTERS
+    // =========================================================
+    subgraph cluster_L1 {
+        label="Layer 1 — Global Masters" style=filled fillcolor="#e8e8e8" color="#999999"
+        node [fillcolor="#d0d0d0"]
+        Company; Department; CostCenter; Account; Currency
+        FinanceBook; FiscalYear; HolidayList
+    }
+
+    // =========================================================
+    // LAYER 2 — PEOPLE MASTERS
+    // =========================================================
+    subgraph cluster_L2 {
+        label="Layer 2 — People Masters" style=filled fillcolor="#fef9e7" color="#f39c12"
+        node [fillcolor="#fdebd0"]
+        User; Role; UserPermission
+        Customer; Supplier; Contact; Item
+    }
+
+    // =========================================================
+    // LAYER 3 — CRM
+    // =========================================================
+    subgraph cluster_crm {
+        label="Frappe CRM" style=filled fillcolor="#d6eaf8" color="#2980b9"
+        node [fillcolor="#d6eaf8"]
+
+        subgraph cluster_crm_setup {
+            label="CRM Setup" style=filled fillcolor="#c5dff8" color="#2980b9"
+            CRMLeadStatus; CRMDealStatus; CRMLeadSource
+            CRMIndustry; CRMTerritory; CRMLostReason
+            CRMProduct; CRMSLA; CRMHolidayList; CRMOrganization
+        }
+
+        subgraph cluster_crm_docs {
+            label="CRM Documents" style=filled fillcolor="#d6eaf8" color="#2980b9"
+            CRMLead; CRMDeal
+        }
+
+        subgraph cluster_crm_activity {
+            label="CRM Activities" style=filled fillcolor="#e8f4fd" color="#2980b9"
+            CRMTask; FCRMNote; CRMCallLog; CRMEmail
+        }
+    }
+
+    // =========================================================
+    // LAYER 4 — HR
+    // =========================================================
+    subgraph cluster_hr {
+        label="HR Module" style=filled fillcolor="#d5f5e3" color="#1e8449"
+        node [fillcolor="#d5f5e3"]
+
+        subgraph cluster_hr_recruit {
+            label="Recruitment" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            StaffingPlan; JobRequisition; JobOpening
+            JobApplicant; Interview; InterviewFeedback
+            JobOffer; AppointmentLetter
+        }
+
+        Employee
+
+        subgraph cluster_hr_leave {
+            label="Leave" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            LeaveType; LeavePolicy; LeavePolicyAssignment
+            LeaveAllocation; LeaveApplication
+            LeaveLedgerEntry; LeaveEncashment; CompensatoryLeaveRequest
+        }
+
+        subgraph cluster_hr_attend {
+            label="Attendance & Shifts" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            ShiftType; ShiftAssignment; ShiftRequest
+            EmployeeCheckin; Attendance; AttendanceRequest
+        }
+
+        subgraph cluster_hr_perf {
+            label="Performance" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            KRA; AppraisalTemplate; AppraisalCycle; Goal; Appraisal
+        }
+
+        subgraph cluster_hr_lifecycle {
+            label="Lifecycle" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            EmployeeOnboarding; EmployeeTransfer; EmployeePromotion
+            EmployeeSeparation; FullFinalStatement; ExitInterview
+        }
+
+        subgraph cluster_hr_expense {
+            label="Expenses" style=filled fillcolor="#c8f0d8" color="#1e8449"
+            EmployeeAdvance; ExpenseClaim
+        }
+    }
+
+    // =========================================================
+    // LAYER 5 — PAYROLL
+    // =========================================================
+    subgraph cluster_payroll {
+        label="Payroll Module" style=filled fillcolor="#fef9e7" color="#d68910"
+        node [fillcolor="#fef9e7"]
+
+        subgraph cluster_pay_setup {
+            label="Payroll Setup" style=filled fillcolor="#fdebd0" color="#d68910"
+            PayrollPeriod; IncomeTaxSlab
+            SalaryComponent; SalaryStructure; SalaryStructureAssignment
+        }
+
+        subgraph cluster_pay_adhoc {
+            label="Ad-hoc Pay" style=filled fillcolor="#fdebd0" color="#d68910"
+            AdditionalSalary; EmployeeIncentive; RetentionBonus
+        }
+
+        subgraph cluster_pay_run {
+            label="Payroll Run" style=filled fillcolor="#fdebd0" color="#d68910"
+            PayrollEntry; SalarySlip
+        }
+    }
+
+    // =========================================================
+    // LAYER 6 — PROJECTS
+    // =========================================================
+    subgraph cluster_projects {
+        label="Projects Module" style=filled fillcolor="#fce4d6" color="#c0392b"
+        node [fillcolor="#fce4d6"]
+
+        subgraph cluster_proj_setup {
+            label="Project Setup" style=filled fillcolor="#f9cfc7" color="#c0392b"
+            ActivityType; ActivityCost; ProjectTemplate
+        }
+
+        subgraph cluster_proj_docs {
+            label="Project Documents" style=filled fillcolor="#fce4d6" color="#c0392b"
+            Project; Task; Timesheet; SalesInvoice
+        }
+    }
+
+    // =========================================================
+    // LAYER 7 — ASSETS
+    // =========================================================
+    subgraph cluster_assets {
+        label="Asset Management" style=filled fillcolor="#e8daef" color="#6c3483"
+        node [fillcolor="#e8daef"]
+
+        subgraph cluster_asset_setup {
+            label="Asset Setup" style=filled fillcolor="#dcc6e0" color="#6c3483"
+            Location; AssetCategory; AssetMaintenanceTeam
+        }
+
+        subgraph cluster_asset_docs {
+            label="Asset Documents" style=filled fillcolor="#e8daef" color="#6c3483"
+            Asset; AssetDepreciationSchedule
+            AssetMovement; AssetRepair
+            AssetMaintenance; AssetMaintenanceLog
+            AssetValueAdjustment; AssetCapitalization
+        }
+    }
+
+    // =========================================================
+    // ACCOUNTING SPINE
+    // =========================================================
+    subgraph cluster_accounting {
+        label="Accounting Spine" style=filled fillcolor="#fadbd8" color="#922b21"
+        node [fillcolor="#fadbd8"]
+        JournalEntry; PaymentEntry; GLEntry
+    }
+
+    // =========================================================
+    // L1 → L2 CONNECTIONS
+    // =========================================================
+    Company -> Department
+    Company -> CostCenter
+    Company -> Account
+    Company -> FiscalYear
+    HolidayList -> ShiftType
+    HolidayList -> LeaveType
+    Currency -> IncomeTaxSlab
+    Currency -> SalaryStructure
+    FinanceBook -> AssetCategory
+    FinanceBook -> Asset
+
+    // =========================================================
+    // L2 → EVERYTHING
+    // =========================================================
+    User -> Role [label="has role"]
+    User -> UserPermission [label="row-level security"]
+    User -> Employee [label="user_id" color="#1e8449" style=bold]
+    User -> CRMLead [label="lead_owner" color="#2980b9"]
+    User -> CRMDeal [label="deal_owner" color="#2980b9"]
+    User -> LeaveApplication [label="leave_approver" color="#1e8449"]
+    User -> ExpenseClaim [label="expense_approver" color="#1e8449"]
+    User -> Interview [label="interviewer" color="#1e8449"]
+    User -> Project [label="project user" color="#c0392b"]
+    User -> CRMTask [label="assigned_to" color="#2980b9"]
+    Customer -> Project [label="customer" color="#c0392b" style=dashed]
+    Customer -> SalesInvoice [label="billed to" color="#c0392b" style=dashed]
+    Item -> Asset [label="item_code\n(Is Fixed Asset)" color="#6c3483"]
+    Supplier -> Asset [label="asset_owner" color="#6c3483" style=dashed]
+
+    // =========================================================
+    // CRM SETUP → DOCUMENTS
+    // =========================================================
+    CRMLeadStatus -> CRMLead [label="status"]
+    CRMDealStatus -> CRMDeal [label="status"]
+    CRMLeadSource -> CRMLead [label="source"]
+    CRMLeadSource -> CRMDeal [label="source"]
+    CRMIndustry -> CRMLead [label="industry"]
+    CRMIndustry -> CRMDeal [label="industry"]
+    CRMTerritory -> CRMLead [label="territory"]
+    CRMTerritory -> CRMDeal [label="territory"]
+    CRMLostReason -> CRMLead [label="lost_reason"]
+    CRMLostReason -> CRMDeal [label="lost_reason"]
+    CRMProduct -> CRMLead [label="products table"]
+    CRMProduct -> CRMDeal [label="products table"]
+    CRMSLA -> CRMLead [label="sla"]
+    CRMSLA -> CRMDeal [label="sla"]
+    CRMHolidayList -> CRMSLA [label="holiday_list"]
+    CRMOrganization -> CRMDeal [label="organization"]
+    Contact -> CRMDeal [label="contacts table"]
+
+    // =========================================================
+    // CRM DOCUMENTS → ACTIVITIES
+    // =========================================================
+    CRMLead -> CRMTask [label="reference"]
+    CRMLead -> FCRMNote [label="reference"]
+    CRMLead -> CRMCallLog [label="reference"]
+    CRMLead -> CRMEmail [label="reference"]
+    CRMDeal -> CRMTask [label="reference"]
+    CRMDeal -> FCRMNote [label="reference"]
+    CRMDeal -> CRMCallLog [label="reference"]
+    CRMDeal -> CRMEmail [label="reference"]
+
+    // =========================================================
+    // CRM → CROSS MODULE
+    // =========================================================
+    CRMLead -> CRMDeal [label="Convert" style=bold color="#e74c3c" penwidth=2]
+    CRMDeal -> Customer [label="sync to ERPNext" style=dashed color="#e74c3c"]
+
+    // =========================================================
+    // HR RECRUITMENT CHAIN
+    // =========================================================
+    StaffingPlan -> JobRequisition [label="raises"]
+    JobRequisition -> JobOpening [label="creates"]
+    JobOpening -> JobApplicant [label="applied to"]
+    JobApplicant -> Interview [label="scheduled for"]
+    Interview -> InterviewFeedback [label="per interviewer"]
+    InterviewFeedback -> JobOffer [label="leads to"]
+    JobOffer -> AppointmentLetter [label="generates"]
+    JobOffer -> Employee [label="creates" style=bold color="#1e8449" penwidth=2]
+    JobOffer -> EmployeeOnboarding [label="triggers"]
+
+    // =========================================================
+    // HR LEAVE CHAIN
+    // =========================================================
+    LeaveType -> LeavePolicy [label="policy detail"]
+    LeavePolicy -> LeavePolicyAssignment [label="assigned via"]
+    Employee -> LeavePolicyAssignment [label="employee"]
+    LeavePolicyAssignment -> LeaveAllocation [label="auto-creates"]
+    LeaveAllocation -> LeaveApplication [label="balance used by"]
+    LeaveApplication -> LeaveLedgerEntry [label="auto-creates"]
+    LeaveApplication -> Attendance [label="leave_application"]
+    LeaveApplication -> SalarySlip [label="lwp days"]
+    CompensatoryLeaveRequest -> LeaveAllocation [label="creates"]
+    LeaveEncashment -> SalarySlip [label="via Additional Salary"]
+    Employee -> LeaveApplication [label="employee"]
+
+    // =========================================================
+    // HR ATTENDANCE CHAIN
+    // =========================================================
+    ShiftType -> ShiftAssignment [label="assigned via"]
+    Employee -> ShiftAssignment [label="employee"]
+    ShiftRequest -> ShiftAssignment [label="on approval"]
+    Employee -> EmployeeCheckin [label="employee"]
+    ShiftType -> EmployeeCheckin [label="shift (auto-detected)"]
+    EmployeeCheckin -> Attendance [label="auto-creates"]
+    AttendanceRequest -> Attendance [label="regularizes"]
+    Employee -> Attendance [label="employee"]
+    Attendance -> SalarySlip [label="payment_days calc"]
+
+    // =========================================================
+    // HR PERFORMANCE CHAIN
+    // =========================================================
+    KRA -> AppraisalTemplate [label="template goal"]
+    AppraisalTemplate -> AppraisalCycle [label="used in"]
+    Employee -> AppraisalCycle [label="appraisee"]
+    AppraisalCycle -> Goal [label="goals set in"]
+    Goal -> Appraisal [label="scored in"]
+    AppraisalCycle -> Appraisal [label="generates"]
+
+    // =========================================================
+    // HR LIFECYCLE CHAIN
+    // =========================================================
+    Employee -> EmployeeOnboarding [label="employee"]
+    Employee -> EmployeeTransfer [label="employee"]
+    Employee -> EmployeePromotion [label="employee"]
+    Employee -> EmployeeSeparation [label="employee"]
+    EmployeeSeparation -> FullFinalStatement [label="triggers"]
+    EmployeeSeparation -> ExitInterview [label="triggers"]
+    FullFinalStatement -> Asset [label="asset return" color="#6c3483" style=dashed]
+
+    // =========================================================
+    // HR EXPENSE CHAIN
+    // =========================================================
+    Employee -> EmployeeAdvance [label="employee"]
+    Employee -> ExpenseClaim [label="employee"]
+    EmployeeAdvance -> ExpenseClaim [label="advance settled in"]
+    ExpenseClaim -> JournalEntry [label="on submit" color="#922b21"]
+    ExpenseClaim -> Project [label="project" color="#c0392b" style=dashed]
+    ExpenseClaim -> Task [label="task" color="#c0392b" style=dashed]
+
+    // =========================================================
+    // PAYROLL CHAIN
+    // =========================================================
+    SalaryComponent -> SalaryStructure [label="earnings/deductions"]
+    SalaryStructure -> SalaryStructureAssignment [label="assigned via"]
+    Employee -> SalaryStructureAssignment [label="employee"]
+    IncomeTaxSlab -> SalaryStructureAssignment [label="tax slab"]
+    PayrollPeriod -> PayrollEntry [label="period"]
+    SalaryStructureAssignment -> PayrollEntry [label="used by"]
+    AdditionalSalary -> SalarySlip [label="pulled in"]
+    EmployeeIncentive -> SalarySlip [label="pulled in"]
+    RetentionBonus -> SalarySlip [label="pulled in"]
+    PayrollEntry -> SalarySlip [label="creates" style=bold color="#d68910" penwidth=2]
+    Employee -> SalarySlip [label="employee"]
+    Department -> PayrollEntry [label="filter"]
+    CostCenter -> PayrollEntry [label="cost_center"]
+    SalarySlip -> JournalEntry [label="on submit" color="#922b21"]
+    JournalEntry -> PaymentEntry [label="bank payment"]
+    JournalEntry -> GLEntry [label="creates"]
+
+    // =========================================================
+    // PROJECTS CHAIN
+    // =========================================================
+    ActivityType -> ActivityCost [label="rates per employee"]
+    ActivityCost -> Timesheet [label="fetches rates"]
+    Employee -> ActivityCost [label="employee"]
+    ProjectTemplate -> Project [label="creates tasks from"]
+    Project -> Task [label="has tasks"]
+    Task -> Task [label="parent_task" style=dashed]
+    Employee -> Timesheet [label="employee"]
+    Project -> Timesheet [label="parent_project"]
+    Task -> Timesheet [label="timesheet detail"]
+    Timesheet -> SalarySlip [label="timesheet costing" color="#d68910" style=dashed]
+    Timesheet -> SalesInvoice [label="billable hours" color="#c0392b"]
+    SalesInvoice -> JournalEntry [label="on submit" color="#922b21"]
+
+    // =========================================================
+    // ASSETS CHAIN
+    // =========================================================
+    AssetCategory -> Asset [label="asset_category"]
+    Location -> Asset [label="location"]
+    Employee -> Asset [label="custodian" color="#1e8449" style=dashed]
+    Department -> Asset [label="department" style=dashed]
+    CostCenter -> Asset [label="cost_center" style=dashed]
+    AssetMaintenanceTeam -> AssetMaintenance [label="maintenance_team"]
+    Asset -> AssetDepreciationSchedule [label="auto on submit"]
+    AssetDepreciationSchedule -> JournalEntry [label="monthly posting" color="#922b21"]
+    Asset -> AssetMovement [label="asset"]
+    AssetMovement -> Employee [label="to_employee" color="#1e8449" style=dashed]
+    AssetMovement -> Location [label="target_location"]
+    Asset -> AssetRepair [label="asset"]
+    AssetRepair -> JournalEntry [label="if capitalized" color="#922b21"]
+    Asset -> AssetMaintenance [label="asset"]
+    AssetMaintenance -> AssetMaintenanceLog [label="auto per task"]
+    Asset -> AssetValueAdjustment [label="asset"]
+    AssetValueAdjustment -> JournalEntry [label="on submit" color="#922b21"]
+    Asset -> AssetCapitalization [label="target_asset"]
+
+    // =========================================================
+    // ACCOUNTING SPINE CONNECTIONS
+    // =========================================================
+    Account -> JournalEntry [label="accounts table"]
+    JournalEntry -> GLEntry [label="creates"]
+    CostCenter -> JournalEntry [label="dimension"]
+    Department -> JournalEntry [label="dimension"]
+    Project -> JournalEntry [label="dimension" color="#c0392b" style=dashed]
+
+    // =========================================================
+    // CROSS-MODULE SUMMARY EDGES
+    // =========================================================
+    CostCenter -> SalarySlip [label="via SSA" color="#d68910" style=dashed]
+    CostCenter -> ExpenseClaim [label="cost_center" color="#1e8449" style=dashed]
+    CostCenter -> Asset [label="cost_center" color="#6c3483" style=dashed]
+    Department -> Employee [label="department"]
+    Department -> SalarySlip [label="via Payroll Entry" color="#d68910" style=dashed]
+}
