@@ -42,6 +42,8 @@ jobs:
           context: .
           file: images/layered/Containerfile
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           tags: |
             ${{ env.IMAGE_NAME }}:15
             ${{ env.IMAGE_NAME }}:latest
