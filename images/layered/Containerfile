@@ -37,6 +37,7 @@ COPY --chown=frappe:frappe app_overrides/erpnext/fixed_asset_register.py /home/f
 COPY --chown=frappe:frappe app_overrides/erpnext/project.js /home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
 COPY --chown=frappe:frappe app_overrides/erpnext/task.js /home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
 COPY --chown=frappe:frappe app_overrides/hrms/overrides/employee_timesheet.py /home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+COPY --chown=frappe:frappe app_overrides/hrms/job_offer.py /home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
 
 FROM frappe/base:${FRAPPE_BRANCH} AS backend
 
