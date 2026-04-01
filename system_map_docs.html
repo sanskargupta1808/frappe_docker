@@ -1,0 +1,1053 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>System Map — Node Reference</title>
+<style>
+  :root {
+    --l1: #d0d0d0; --l1b: #e8e8e8;
+    --l2: #fdebd0; --l2b: #fef9e7;
+    --crm: #d6eaf8; --crmb: #c5dff8;
+    --hr: #d5f5e3; --hrb: #c8f0d8;
+    --pay: #fef9e7; --payb: #fdebd0;
+    --proj: #fce4d6; --projb: #f9cfc7;
+    --asset: #e8daef; --assetb: #dcc6e0;
+    --acc: #fadbd8; --accb: #f5b7b1;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: Helvetica, Arial, sans-serif; font-size: 14px; background: #f5f5f5; color: #222; }
+  header { background: #2c3e50; color: #fff; padding: 24px 32px; }
+  header h1 { font-size: 22px; margin-bottom: 6px; }
+  header p { font-size: 13px; color: #bdc3c7; }
+  nav { background: #34495e; padding: 10px 32px; display: flex; flex-wrap: wrap; gap: 8px; }
+  nav a { color: #ecf0f1; text-decoration: none; font-size: 12px; padding: 4px 10px; border-radius: 4px; background: rgba(255,255,255,0.1); }
+  nav a:hover { background: rgba(255,255,255,0.25); }
+  main { max-width: 1400px; margin: 0 auto; padding: 24px 32px; }
+  .layer { margin-bottom: 40px; border-radius: 10px; overflow: hidden; border: 1px solid #ccc; }
+  .layer-header { padding: 14px 20px; font-size: 15px; font-weight: bold; }
+  .sublayer { margin: 12px 16px; border-radius: 8px; overflow: hidden; border: 1px solid rgba(0,0,0,0.1); }
+  .sublayer-header { padding: 10px 16px; font-size: 13px; font-weight: bold; color: #444; }
+  .nodes { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; padding: 12px 16px; }
+  .node { background: #fff; border-radius: 8px; border: 1px solid #ddd; padding: 14px 16px; }
+  .node h3 { font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+  .node h3 a { color: #2980b9; text-decoration: none; }
+  .node h3 a:hover { text-decoration: underline; }
+  .node p { font-size: 12px; color: #555; line-height: 1.5; margin-bottom: 6px; }
+  .node .meta { font-size: 11px; color: #888; }
+  .node .meta span { display: inline-block; background: #f0f0f0; border-radius: 3px; padding: 1px 6px; margin: 2px 2px 0 0; }
+  .tag { display: inline-block; font-size: 10px; padding: 2px 7px; border-radius: 10px; margin-bottom: 6px; font-weight: bold; }
+  /* Layer colors */
+  .l1 .layer-header { background: var(--l1b); }
+  .l1 .sublayer-header { background: var(--l1); }
+  .l2 .layer-header { background: var(--l2b); }
+  .l2 .sublayer-header { background: var(--l2); }
+  .crm .layer-header { background: #2980b9; color: #fff; }
+  .crm .sublayer-header { background: var(--crmb); }
+  .hr .layer-header { background: #1e8449; color: #fff; }
+  .hr .sublayer-header { background: var(--hrb); }
+  .pay .layer-header { background: #d68910; color: #fff; }
+  .pay .sublayer-header { background: var(--payb); }
+  .proj .layer-header { background: #c0392b; color: #fff; }
+  .proj .sublayer-header { background: var(--projb); }
+  .asset .layer-header { background: #6c3483; color: #fff; }
+  .asset .sublayer-header { background: var(--assetb); }
+  .acc .layer-header { background: #922b21; color: #fff; }
+  .acc .sublayer-header { background: var(--accb); }
+  .tag-l1 { background: #d0d0d0; color: #333; }
+  .tag-l2 { background: #fdebd0; color: #7d6608; }
+  .tag-crm { background: #d6eaf8; color: #1a5276; }
+  .tag-hr { background: #d5f5e3; color: #1e8449; }
+  .tag-pay { background: #fef9e7; color: #7d6608; }
+  .tag-proj { background: #fce4d6; color: #922b21; }
+  .tag-asset { background: #e8daef; color: #6c3483; }
+  .tag-acc { background: #fadbd8; color: #922b21; }
+  .svg-link { display: inline-block; margin-top: 8px; font-size: 12px; }
+  .svg-link a { color: #2980b9; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Full System Map — Node Reference</h1>
+  <p>Every node from <code>full_system_map_linked.svg</code> — what each page does, what it contains, and how it connects to the rest of the system.</p>
+  <div class="svg-link"><a href="full_system_map_linked.svg" target="_blank">↗ Open Interactive SVG Map</a></div>
+</header>
+<nav>
+  <a href="#l1">Layer 1 — Global Masters</a>
+  <a href="#l2">Layer 2 — People Masters</a>
+  <a href="#crm">Frappe CRM</a>
+  <a href="#hr">HR Module</a>
+  <a href="#payroll">Payroll</a>
+  <a href="#projects">Projects</a>
+  <a href="#assets">Asset Management</a>
+  <a href="#accounting">Accounting Spine</a>
+</nav>
+<main>
+
+<!-- ===== LAYER 1 ===== -->
+<section class="layer l1" id="l1">
+  <div class="layer-header">Layer 1 — Global Masters</div>
+  <p style="padding:8px 20px;font-size:12px;color:#555;">Foundation records that every other module depends on. Set these up first before any transactions.</p>
+  <div class="nodes">
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/company" target="_blank">Company</a></h3>
+      <p>The top-level legal entity. Defines the default currency, country, chart of accounts, and fiscal year. Every transaction, employee, and asset belongs to a Company.</p>
+      <div class="meta">
+        <span>→ Department</span><span>→ Cost Center</span><span>→ Account</span><span>→ Fiscal Year</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/department" target="_blank">Department</a></h3>
+      <p>Organisational unit within a Company (e.g. Engineering, Finance). Used to group employees, filter payroll runs, and tag GL entries as a cost dimension.</p>
+      <div class="meta">
+        <span>→ Employee</span><span>→ Payroll Entry (filter)</span><span>→ Asset (dimension)</span><span>→ Journal Entry (dimension)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/cost-center" target="_blank">Cost Center</a></h3>
+      <p>Accounting dimension for tracking where money is spent. Linked to payroll, expense claims, assets, and journal entries to enable profit-center reporting.</p>
+      <div class="meta">
+        <span>→ Payroll Entry</span><span>→ Salary Slip</span><span>→ Expense Claim</span><span>→ Asset</span><span>→ Journal Entry</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/account" target="_blank">Account</a></h3>
+      <p>A single node in the Chart of Accounts (asset, liability, income, expense, equity). Every financial posting references an Account. Parent of GL Entry rows.</p>
+      <div class="meta">
+        <span>→ Journal Entry (accounts table)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/currency" target="_blank">Currency</a></h3>
+      <p>Defines exchange rates and currency symbols. Referenced by Income Tax Slabs and Salary Structures to ensure correct monetary calculations across multi-currency setups.</p>
+      <div class="meta">
+        <span>→ Income Tax Slab</span><span>→ Salary Structure</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/finance-book" target="_blank">Finance Book</a></h3>
+      <p>Allows parallel depreciation books (e.g. GAAP vs Tax). Asset Categories and Assets reference a Finance Book to post depreciation to the correct ledger.</p>
+      <div class="meta">
+        <span>→ Asset Category</span><span>→ Asset</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/fiscal-year" target="_blank">Fiscal Year</a></h3>
+      <p>Defines the accounting year start/end dates. Controls which period transactions fall into and drives year-end closing entries.</p>
+      <div class="meta">
+        <span>← Company</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l1">Global Master</span>
+      <h3><a href="http://erp.localhost:8080/app/holiday-list" target="_blank">Holiday List</a></h3>
+      <p>A named list of non-working days (public holidays, company holidays). Assigned to Shift Types and Leave Types to correctly calculate working days and leave balances.</p>
+      <div class="meta">
+        <span>→ Shift Type</span><span>→ Leave Type</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== LAYER 2 ===== -->
+<section class="layer l2" id="l2">
+  <div class="layer-header">Layer 2 — People Masters</div>
+  <p style="padding:8px 20px;font-size:12px;color:#555;">Core records for users, customers, suppliers, and items — the "who" and "what" of the system.</p>
+  <div class="nodes">
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/user" target="_blank">User</a></h3>
+      <p>A login account in the system. Linked to an Employee record via <code>user_id</code>. Drives role-based access, leave approvals, expense approvals, interview scheduling, and CRM ownership.</p>
+      <div class="meta">
+        <span>→ Role</span><span>→ User Permission</span><span>→ Employee</span><span>→ CRM Lead (owner)</span><span>→ CRM Deal (owner)</span><span>→ Leave Application (approver)</span><span>→ Expense Claim (approver)</span><span>→ Interview (interviewer)</span><span>→ Project (user)</span><span>→ CRM Task (assigned_to)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/role" target="_blank">Role</a></h3>
+      <p>A named permission profile (e.g. "HR Manager", "Accounts User"). Users are assigned one or more Roles which control which doctypes and fields they can read/write/submit.</p>
+      <div class="meta">
+        <span>← User</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/user-permission" target="_blank">User Permission</a></h3>
+      <p>Row-level security rules. Restricts a User to only see records belonging to specific Companies, Cost Centers, or other master values. Enforced automatically on all list views and reports.</p>
+      <div class="meta">
+        <span>← User</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/customer" target="_blank">Customer</a></h3>
+      <p>An external party that buys goods or services. Linked to Projects (for client billing) and Sales Invoices. Can be synced from a converted CRM Deal.</p>
+      <div class="meta">
+        <span>→ Project (customer)</span><span>→ Sales Invoice (billed to)</span><span>← CRM Deal (sync)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/supplier" target="_blank">Supplier</a></h3>
+      <p>An external party that supplies goods or services. Can be recorded as the owner of an Asset (e.g. leased equipment).</p>
+      <div class="meta">
+        <span>→ Asset (asset_owner)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/contact" target="_blank">Contact</a></h3>
+      <p>An individual person associated with a Customer, Supplier, or CRM record. Stores phone, email, and address. Linked into CRM Deal's contacts table for relationship tracking.</p>
+      <div class="meta">
+        <span>→ CRM Deal (contacts table)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-l2">People Master</span>
+      <h3><a href="http://erp.localhost:8080/app/item" target="_blank">Item</a></h3>
+      <p>A product or service SKU. When flagged as "Is Fixed Asset", it becomes the source item for creating an Asset record upon purchase receipt.</p>
+      <div class="meta">
+        <span>→ Asset (item_code, Is Fixed Asset)</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ===== CRM ===== -->
+<section class="layer crm" id="crm">
+  <div class="layer-header">Frappe CRM</div>
+  <p style="padding:8px 20px;font-size:12px;color:#eaf4fb;">Pipeline management from lead capture through deal closure. Runs as a separate Vue SPA at <code>/frappe-crm</code>.</p>
+
+  <div class="sublayer">
+    <div class="sublayer-header">CRM Setup — Configuration masters that govern all CRM behaviour</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-lead-status" target="_blank">Lead Status</a></h3>
+        <p>Configurable status values for the Lead pipeline (e.g. New, Contacted, Qualified). Drives the Kanban column labels on the Leads board.</p>
+        <div class="meta"><span>→ CRM Lead (status)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-deal-status" target="_blank">Deal Status</a></h3>
+        <p>Configurable status values for the Deal pipeline (e.g. Proposal Sent, Negotiation, Won). Drives the Kanban column labels on the Deals board.</p>
+        <div class="meta"><span>→ CRM Deal (status)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-lead-source" target="_blank">Lead Source</a></h3>
+        <p>Where a lead originated (e.g. Website, Referral, Cold Call). Used for source attribution reporting on both Leads and Deals.</p>
+        <div class="meta"><span>→ CRM Lead (source)</span><span>→ CRM Deal (source)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-industry" target="_blank">Industry</a></h3>
+        <p>Industry vertical of the prospect (e.g. Manufacturing, Healthcare). Enables segmentation and filtering of leads and deals by vertical.</p>
+        <div class="meta"><span>→ CRM Lead</span><span>→ CRM Deal</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-territory" target="_blank">Territory</a></h3>
+        <p>Geographic or sales territory (e.g. North India, APAC). Used to assign leads and deals to regional sales teams and for territory-based reporting.</p>
+        <div class="meta"><span>→ CRM Lead</span><span>→ CRM Deal</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-lost-reason" target="_blank">Lost Reason</a></h3>
+        <p>Predefined reasons for marking a lead or deal as lost (e.g. Price, Competitor, No Budget). Mandatory when closing a record as lost; feeds win/loss analysis.</p>
+        <div class="meta"><span>→ CRM Lead</span><span>→ CRM Deal</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-product" target="_blank">CRM Product</a></h3>
+        <p>Products or services being sold, maintained separately from ERPNext Items. Added to the products table on Leads and Deals to track what is being pitched.</p>
+        <div class="meta"><span>→ CRM Lead (products table)</span><span>→ CRM Deal (products table)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-service-level-agreement" target="_blank">SLA</a></h3>
+        <p>Service Level Agreement defining response and resolution time targets. Assigned to Leads and Deals; uses a CRM Holiday List to exclude non-working days from SLA calculations.</p>
+        <div class="meta"><span>→ CRM Lead</span><span>→ CRM Deal</span><span>← CRM Holiday List</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-holiday-list" target="_blank">CRM Holiday List</a></h3>
+        <p>A CRM-specific holiday calendar used exclusively by SLA calculations to skip non-working days when computing response deadlines.</p>
+        <div class="meta"><span>→ SLA</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/frappe-crm/organizations" target="_blank">Organization</a></h3>
+        <p>A company/account record in CRM (distinct from ERPNext Customer). Deals are linked to an Organization to group all deals under one account for account-based selling.</p>
+        <div class="meta"><span>→ CRM Deal (organization)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/fcrm-settings" target="_blank">FCRM Settings</a></h3>
+        <p>Global configuration for Frappe CRM — default lead owner, auto-assignment rules, email integration settings, and feature flags. Acts as the single config document for the entire CRM app.</p>
+        <div class="meta"><span>→ CRM Lead (global config)</span><span>→ CRM Deal (global config)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">CRM Documents — The core pipeline records</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Document</span>
+        <h3><a href="http://erp.localhost:8080/app/frappe-crm/leads" target="_blank">CRM Lead</a></h3>
+        <p>An unqualified sales opportunity or prospect. Contains contact details, source, industry, territory, SLA, and a products table. Can be converted into a CRM Deal. Activities (tasks, notes, calls, emails) are attached by reference.</p>
+        <div class="meta">
+          <span>→ CRM Deal (Convert)</span><span>← Lead Status</span><span>← Lead Source</span><span>← Industry</span><span>← Territory</span><span>← Lost Reason</span><span>← CRM Product</span><span>← SLA</span><span>← User (owner)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Document</span>
+        <h3><a href="http://erp.localhost:8080/app/frappe-crm/deals" target="_blank">CRM Deal</a></h3>
+        <p>A qualified sales opportunity with a value, close date, and linked organization. Tracks the full sales cycle. On winning, can sync to ERPNext as a Customer. Activities, contacts, and notes are all attached here.</p>
+        <div class="meta">
+          <span>→ Customer (sync on win)</span><span>← Deal Status</span><span>← Organization</span><span>← Contact</span><span>← User (owner)</span><span>← SLA</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">CRM Activities — Actions and interactions logged against Leads/Deals</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-task" target="_blank">CRM Task</a></h3>
+        <p>A to-do item linked to a Lead or Deal (e.g. "Follow up call", "Send proposal"). Has a due date, assigned user, and completion status. Separate from ERPNext Project Tasks.</p>
+        <div class="meta"><span>← CRM Lead (reference)</span><span>← CRM Deal (reference)</span><span>← User (assigned_to)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/fcrm-note" target="_blank">Note</a></h3>
+        <p>A free-text note attached to a Lead or Deal. Used for meeting summaries, internal comments, and context that doesn't fit structured fields.</p>
+        <div class="meta"><span>← CRM Lead (reference)</span><span>← CRM Deal (reference)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/crm-call-log" target="_blank">Call Log</a></h3>
+        <p>Records of phone calls made or received, linked to a Lead or Deal. Stores caller, duration, outcome, and recording URL if telephony integration is active.</p>
+        <div class="meta"><span>← CRM Lead (reference)</span><span>← CRM Deal (reference)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/communication" target="_blank">Email (Communication)</a></h3>
+        <p>Email threads linked to a Lead or Deal via Frappe's Communication doctype. Enables full email history to be visible in the CRM timeline without leaving the app.</p>
+        <div class="meta"><span>← CRM Lead (reference)</span><span>← CRM Deal (reference)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/frappe-crm/contacts" target="_blank">Contacts</a></h3>
+        <p>The contacts tab within a CRM Deal listing all people associated with the deal. Links to the global Contact master. Allows multiple stakeholders per deal.</p>
+        <div class="meta"><span>← CRM Deal (contacts tab)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-crm">CRM Activity</span>
+        <h3><a href="http://erp.localhost:8080/app/frappe-crm/dashboard" target="_blank">Dashboard</a></h3>
+        <p>The CRM analytics dashboard. Shows pipeline value, lead/deal counts by status, conversion rates, and activity summaries. Reads from CRM Lead and CRM Deal for all metrics.</p>
+        <div class="meta"><span>→ CRM Lead (analytics)</span><span>→ CRM Deal (analytics)</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== HR ===== -->
+<section class="layer hr" id="hr">
+  <div class="layer-header">HR Module</div>
+  <p style="padding:8px 20px;font-size:12px;color:#eafaf1;">Full employee lifecycle — recruitment, onboarding, leave, attendance, performance, and separation.</p>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Recruitment — Hire-to-offer pipeline</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/staffing-plan" target="_blank">Staffing Plan</a></h3>
+        <p>Headcount budget for a department and designation over a period. Defines how many positions are approved for hiring. Raises Job Requisitions against the plan.</p>
+        <div class="meta"><span>→ Job Requisition</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/job-requisition" target="_blank">Job Requisition</a></h3>
+        <p>An internal request to fill a position, raised against a Staffing Plan. Contains the role, department, number of positions, and justification. Approved requisitions create Job Openings.</p>
+        <div class="meta"><span>← Staffing Plan</span><span>→ Job Opening</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/job-opening" target="_blank">Job Opening</a></h3>
+        <p>A published vacancy. Contains job title, description, department, and status (Open/Closed). Applicants apply against a Job Opening. Can be published to the careers portal.</p>
+        <div class="meta"><span>← Job Requisition</span><span>→ Job Applicant</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/job-applicant" target="_blank">Job Applicant</a></h3>
+        <p>A candidate who applied for a Job Opening. Stores resume, cover letter, applicant email, and current status in the hiring pipeline. Scheduled for Interviews.</p>
+        <div class="meta"><span>← Job Opening</span><span>→ Interview</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/interview" target="_blank">Interview</a></h3>
+        <p>A scheduled interview session for a Job Applicant. Specifies round type, date/time, interviewers (Users), and expected skills. Each interviewer submits an Interview Feedback.</p>
+        <div class="meta"><span>← Job Applicant</span><span>← User (interviewer)</span><span>→ Interview Feedback</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/interview-feedback" target="_blank">Interview Feedback</a></h3>
+        <p>Per-interviewer scorecard for an Interview. Contains skill ratings, overall recommendation (Proceed/Reject), and comments. Aggregated to decide on a Job Offer.</p>
+        <div class="meta"><span>← Interview</span><span>→ Job Offer</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/job-offer" target="_blank">Job Offer</a></h3>
+        <p>The formal offer letter document sent to a selected Job Applicant. Contains designation, salary terms, offer date, and status (Awaiting/Accepted/Rejected). On acceptance, creates an Employee record and triggers onboarding. <em>Custom override applied in this repo.</em></p>
+        <div class="meta"><span>← Interview Feedback</span><span>→ Employee (creates)</span><span>→ Appointment Letter</span><span>→ Employee Onboarding (triggers)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Recruitment</span>
+        <h3><a href="http://erp.localhost:8080/app/appointment-letter" target="_blank">Appointment Letter</a></h3>
+        <p>A formal appointment/joining letter generated from an accepted Job Offer. Contains terms of employment, joining date, and can be printed on letterhead.</p>
+        <div class="meta"><span>← Job Offer</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Employee — The central HR record</div>
+    <div class="nodes">
+      <div class="node">
+        <span class="tag tag-hr">Core</span>
+        <h3><a href="http://erp.localhost:8080/app/employee" target="_blank">Employee</a></h3>
+        <p>The master record for a staff member. Contains personal details, department, designation, date of joining, linked User account, salary structure, and emergency contacts. Almost every HR and Payroll document links back to Employee.</p>
+        <div class="meta">
+          <span>← Job Offer (creates)</span><span>← User (user_id)</span><span>← Department</span>
+          <span>→ Leave Policy Assignment</span><span>→ Shift Assignment</span><span>→ Attendance</span>
+          <span>→ Salary Structure Assignment</span><span>→ Timesheet</span><span>→ Asset (custodian)</span>
+          <span>→ Appraisal Cycle</span><span>→ Onboarding / Transfer / Promotion / Separation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Leave — Entitlement, allocation, and application flow</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-type" target="_blank">Leave Type</a></h3>
+        <p>Defines a category of leave (e.g. Annual Leave, Sick Leave, Maternity). Configures whether it is paid, encashable, carry-forward allowed, and which Holiday List applies.</p>
+        <div class="meta"><span>→ Leave Policy (policy detail)</span><span>← Holiday List</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-policy" target="_blank">Leave Policy</a></h3>
+        <p>A bundle of Leave Types with annual entitlement counts. Assigned to employees via Leave Policy Assignment. Defines the full leave entitlement package for a grade or role.</p>
+        <div class="meta"><span>← Leave Type</span><span>→ Leave Policy Assignment</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-policy-assignment" target="_blank">Leave Policy Assignment</a></h3>
+        <p>Links a Leave Policy to a specific Employee for a date range. On submission, automatically creates Leave Allocations for each Leave Type in the policy.</p>
+        <div class="meta"><span>← Leave Policy</span><span>← Employee</span><span>→ Leave Allocation (auto-creates)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-allocation" target="_blank">Leave Allocation</a></h3>
+        <p>The actual balance granted to an employee for a specific Leave Type in a period. Can be created manually or auto-generated from a Leave Policy Assignment or Compensatory Leave Request.</p>
+        <div class="meta"><span>← Leave Policy Assignment</span><span>← Compensatory Leave Request</span><span>→ Leave Application (balance used)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-application" target="_blank">Leave Application</a></h3>
+        <p>An employee's request for leave. Contains leave type, from/to dates, reason, and approver. On approval, deducts from Leave Allocation, creates a Leave Ledger Entry, marks Attendance as On Leave, and feeds LWP days into Salary Slip.</p>
+        <div class="meta">
+          <span>← Leave Allocation</span><span>← Employee</span><span>← User (approver)</span>
+          <span>→ Leave Ledger Entry</span><span>→ Attendance</span><span>→ Salary Slip (lwp days)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-ledger-entry" target="_blank">Leave Ledger Entry</a></h3>
+        <p>An immutable audit log of every leave balance change (allocation, application, encashment). The source of truth for current leave balances. Auto-created; not edited manually.</p>
+        <div class="meta"><span>← Leave Application</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/leave-encashment" target="_blank">Leave Encashment</a></h3>
+        <p>Converts unused leave balance into a cash payout. On submission, creates an Additional Salary entry which is then pulled into the next Salary Slip.</p>
+        <div class="meta"><span>→ Salary Slip (via Additional Salary)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Leave</span>
+        <h3><a href="http://erp.localhost:8080/app/compensatory-leave-request" target="_blank">Compensatory Leave</a></h3>
+        <p>A request to convert overtime/holiday work into compensatory leave credit. On approval, creates a Leave Allocation for the compensatory leave type.</p>
+        <div class="meta"><span>→ Leave Allocation (creates)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Attendance &amp; Shifts — Tracking who worked when</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/shift-type" target="_blank">Shift Type</a></h3>
+        <p>Defines a work shift — start/end times, grace periods, auto-attendance rules, and the Holiday List. The engine that converts Employee Checkins into Attendance records automatically.</p>
+        <div class="meta"><span>← Holiday List</span><span>→ Shift Assignment</span><span>→ Employee Checkin (auto-links)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/shift-assignment" target="_blank">Shift Assignment</a></h3>
+        <p>Assigns a Shift Type to an Employee for a date range. Created from Shift Requests (on approval) or directly by HR. Determines which shift rules apply when processing checkins.</p>
+        <div class="meta"><span>← Shift Type</span><span>← Employee</span><span>← Shift Request</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/shift-request" target="_blank">Shift Request</a></h3>
+        <p>An employee's request to be assigned to a specific shift. Goes through an approval workflow. On approval, creates a Shift Assignment.</p>
+        <div class="meta"><span>→ Shift Assignment (on approval)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-checkin" target="_blank">Employee Checkin</a></h3>
+        <p>Raw IN/OUT timestamps from biometric devices, mobile apps, or manual entry. The Shift Type's auto-attendance job processes these into Attendance records daily.</p>
+        <div class="meta"><span>← Employee</span><span>← Shift Type (auto-linked)</span><span>→ Attendance (auto-creates)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/attendance" target="_blank">Attendance</a></h3>
+        <p>Daily attendance record per employee — Present, Absent, Half Day, On Leave, Work From Home. Feeds payment_days into Salary Slip. Can be created from Checkins, Leave Applications, or Attendance Requests.</p>
+        <div class="meta">
+          <span>← Employee Checkin</span><span>← Leave Application</span><span>← Attendance Request</span><span>← Employee</span>
+          <span>→ Salary Slip (payment_days)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Attendance</span>
+        <h3><a href="http://erp.localhost:8080/app/attendance-request" target="_blank">Attendance Request</a></h3>
+        <p>An employee's request to regularize a missed or incorrect attendance entry (e.g. forgot to check in). On approval, updates or creates the Attendance record.</p>
+        <div class="meta"><span>→ Attendance (regularizes)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Performance — Goal-setting and appraisal cycle</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Performance</span>
+        <h3><a href="http://erp.localhost:8080/app/kra" target="_blank">KRA</a></h3>
+        <p>Key Result Area — a broad performance dimension (e.g. "Customer Satisfaction", "Revenue Growth"). Used as a template goal in Appraisal Templates to structure what employees are evaluated on.</p>
+        <div class="meta"><span>→ Appraisal Template (template goal)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Performance</span>
+        <h3><a href="http://erp.localhost:8080/app/appraisal-template" target="_blank">Appraisal Template</a></h3>
+        <p>A reusable scorecard structure listing KRAs and their weightages. Used when setting up an Appraisal Cycle to define what will be measured.</p>
+        <div class="meta"><span>← KRA</span><span>→ Appraisal Cycle</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Performance</span>
+        <h3><a href="http://erp.localhost:8080/app/appraisal-cycle" target="_blank">Appraisal Cycle</a></h3>
+        <p>A time-boxed performance review period (e.g. "H1 2026"). Links an Appraisal Template to a set of employees. Generates individual Appraisal documents and allows goal-setting.</p>
+        <div class="meta"><span>← Appraisal Template</span><span>← Employee</span><span>→ Goal</span><span>→ Appraisal</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Performance</span>
+        <h3><a href="http://erp.localhost:8080/app/goal" target="_blank">Goal</a></h3>
+        <p>An individual SMART goal set for an employee within an Appraisal Cycle. Contains target, metric, and progress updates. Scored in the final Appraisal.</p>
+        <div class="meta"><span>← Appraisal Cycle</span><span>→ Appraisal (scored in)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Performance</span>
+        <h3><a href="http://erp.localhost:8080/app/appraisal" target="_blank">Appraisal</a></h3>
+        <p>The final performance review document for one employee in one cycle. Contains KRA scores, goal scores, self-assessment, manager feedback, and overall rating. Auto-generated by the Appraisal Cycle.</p>
+        <div class="meta"><span>← Appraisal Cycle</span><span>← Goal (scores)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Lifecycle — Post-hire employee events</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-onboarding" target="_blank">Employee Onboarding</a></h3>
+        <p>A checklist-driven onboarding workflow triggered when a Job Offer is accepted. Contains tasks for IT setup, document collection, orientation, etc. Tracks completion status per activity.</p>
+        <div class="meta"><span>← Job Offer (triggers)</span><span>← Employee</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-transfer" target="_blank">Employee Transfer</a></h3>
+        <p>Records a change in an employee's department, designation, or company. Creates a history of transfers and updates the Employee master fields on submission.</p>
+        <div class="meta"><span>← Employee</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-promotion" target="_blank">Employee Promotion</a></h3>
+        <p>Records a promotion event — change in designation, grade, or salary. Updates the Employee master and creates a history entry. Can trigger a new Salary Structure Assignment.</p>
+        <div class="meta"><span>← Employee</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-separation" target="_blank">Employee Separation</a></h3>
+        <p>Initiates the offboarding process when an employee resigns or is terminated. Triggers Full &amp; Final Statement and Exit Interview. Contains a checklist of separation tasks.</p>
+        <div class="meta"><span>← Employee</span><span>→ Full &amp; Final Statement</span><span>→ Exit Interview</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/full-and-final-statement" target="_blank">Full &amp; Final Statement</a></h3>
+        <p>The settlement document for a departing employee. Calculates outstanding salary, leave encashment, gratuity, and asset returns. Links to Asset records for equipment recovery.</p>
+        <div class="meta"><span>← Employee Separation</span><span>→ Asset (asset return)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Lifecycle</span>
+        <h3><a href="http://erp.localhost:8080/app/exit-interview" target="_blank">Exit Interview</a></h3>
+        <p>A structured questionnaire completed by a departing employee. Captures reasons for leaving, satisfaction scores, and feedback. Used for attrition analysis.</p>
+        <div class="meta"><span>← Employee Separation</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Expenses — Employee advance and reimbursement flow</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-hr">Expenses</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-advance" target="_blank">Employee Advance</a></h3>
+        <p>Cash advance given to an employee before incurring expenses (e.g. for travel). The advance amount is later settled against an Expense Claim, with any balance returned or recovered.</p>
+        <div class="meta"><span>← Employee</span><span>→ Expense Claim (settled in)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-hr">Expenses</span>
+        <h3><a href="http://erp.localhost:8080/app/expense-claim" target="_blank">Expense Claim</a></h3>
+        <p>An employee's reimbursement request for business expenses. Contains itemized expense lines with amounts, categories, and receipts. Can be linked to a Project/Task for cost tracking. On submission, creates a Journal Entry and optionally settles an Employee Advance.</p>
+        <div class="meta">
+          <span>← Employee</span><span>← Employee Advance</span><span>← User (approver)</span><span>← Cost Center</span>
+          <span>→ Journal Entry (on submit)</span><span>→ Project (dimension)</span><span>→ Task (dimension)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== PAYROLL ===== -->
+<section class="layer pay" id="payroll">
+  <div class="layer-header">Payroll Module</div>
+  <p style="padding:8px 20px;font-size:12px;color:#7d6608;">Salary structure definition, payroll run, and GL posting pipeline.</p>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Payroll Setup — Define how salaries are structured</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/payroll-period" target="_blank">Payroll Period</a></h3>
+        <p>Defines the tax year / payroll year boundaries. Used by Payroll Entry to determine which period a run belongs to, and by Income Tax Slab for annual tax calculations.</p>
+        <div class="meta"><span>→ Payroll Entry (period)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/income-tax-slab" target="_blank">Income Tax Slab</a></h3>
+        <p>Tax bracket table defining rates at different income levels. Assigned to a Salary Structure Assignment per employee. Used during Salary Slip generation to compute TDS/income tax deductions.</p>
+        <div class="meta"><span>← Currency</span><span>→ Salary Structure Assignment</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/salary-component" target="_blank">Salary Component</a></h3>
+        <p>A single earning or deduction line item (e.g. Basic, HRA, PF, TDS). Defines whether it is an earning or deduction, the formula or amount, and the GL account to post to.</p>
+        <div class="meta"><span>→ Salary Structure (earnings/deductions)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/salary-structure" target="_blank">Salary Structure</a></h3>
+        <p>A template that bundles Salary Components into a complete pay package. Defines the formula-based or fixed amounts for each component. Assigned to employees via Salary Structure Assignment.</p>
+        <div class="meta"><span>← Salary Component</span><span>← Currency</span><span>→ Salary Structure Assignment</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/salary-structure-assignment" target="_blank">Salary Structure Assignment</a></h3>
+        <p>Links a Salary Structure and Income Tax Slab to a specific Employee from a given date. The effective record used by Payroll Entry to know which structure to apply when generating Salary Slips.</p>
+        <div class="meta"><span>← Salary Structure</span><span>← Employee</span><span>← Income Tax Slab</span><span>→ Payroll Entry (used by)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Ad-hoc Pay — One-time additions to salary</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-pay">Ad-hoc Pay</span>
+        <h3><a href="http://erp.localhost:8080/app/additional-salary" target="_blank">Additional Salary</a></h3>
+        <p>A one-time earning or deduction for a specific employee in a specific month (e.g. bonus, recovery). Pulled automatically into the Salary Slip during payroll processing.</p>
+        <div class="meta"><span>→ Salary Slip (pulled in)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Ad-hoc Pay</span>
+        <h3><a href="http://erp.localhost:8080/app/employee-incentive" target="_blank">Employee Incentive</a></h3>
+        <p>A performance-based incentive payment for an employee. Submitted incentives are pulled into the Salary Slip as an additional earning component.</p>
+        <div class="meta"><span>→ Salary Slip (pulled in)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Ad-hoc Pay</span>
+        <h3><a href="http://erp.localhost:8080/app/retention-bonus" target="_blank">Retention Bonus</a></h3>
+        <p>A retention payment scheduled for a future date. When the payment date arrives, it is pulled into the Salary Slip as an additional earning.</p>
+        <div class="meta"><span>→ Salary Slip (pulled in)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Payroll Run — Monthly processing and GL posting</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Run</span>
+        <h3><a href="http://erp.localhost:8080/app/payroll-entry" target="_blank">Payroll Entry</a></h3>
+        <p>The batch payroll run document. Filters employees by Department, Cost Center, and Payroll Period, then bulk-creates Salary Slips. On submission, posts a consolidated Journal Entry for the entire payroll batch.</p>
+        <div class="meta">
+          <span>← Payroll Period</span><span>← Salary Structure Assignment</span><span>← Department (filter)</span><span>← Cost Center</span>
+          <span>→ Salary Slip (creates, bulk)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-pay">Payroll Run</span>
+        <h3><a href="http://erp.localhost:8080/app/salary-slip" target="_blank">Salary Slip</a></h3>
+        <p>The individual payslip for one employee for one month. Calculates gross pay, deductions, and net pay using the Salary Structure formulas, attendance payment days, LWP days, and any ad-hoc additions. On submission, creates a Journal Entry. Can also incorporate Timesheet costing.</p>
+        <div class="meta">
+          <span>← Payroll Entry</span><span>← Employee</span><span>← Attendance (payment_days)</span>
+          <span>← Leave Application (lwp)</span><span>← Additional Salary</span><span>← Employee Incentive</span>
+          <span>← Retention Bonus</span><span>← Timesheet (costing)</span><span>← Cost Center</span><span>← Department</span>
+          <span>→ Journal Entry (on submit)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== PROJECTS ===== -->
+<section class="layer proj" id="projects">
+  <div class="layer-header">Projects Module</div>
+  <p style="padding:8px 20px;font-size:12px;color:#fce4d6;">Task management, time tracking, and client billing for project-based work.</p>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Project Setup — Configuration masters</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-proj">Project Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/activity-type" target="_blank">Activity Type</a></h3>
+        <p>A category of work activity (e.g. Design, Development, Testing). Used to define billing and costing rates per employee via Activity Cost. Referenced in Timesheet detail rows.</p>
+        <div class="meta"><span>→ Activity Cost (rates per employee)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-proj">Project Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/activity-cost" target="_blank">Activity Cost</a></h3>
+        <p>Defines the billing rate and costing rate for a specific Employee + Activity Type combination. Fetched automatically when an employee logs time on a Timesheet.</p>
+        <div class="meta"><span>← Activity Type</span><span>← Employee</span><span>→ Timesheet (fetches rates)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-proj">Project Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/project-template" target="_blank">Project Template</a></h3>
+        <p>A reusable set of tasks and milestones. When a new Project is created from a template, all template tasks are automatically created under the project, saving setup time.</p>
+        <div class="meta"><span>→ Project (creates tasks from)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Project Documents — Core work tracking records</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-proj">Project</span>
+        <h3><a href="http://erp.localhost:8080/app/project" target="_blank">Project</a></h3>
+        <p>The top-level container for a piece of work. Contains status, customer, expected dates, budget, and a task list. Linked to a Customer for billing. Acts as a cost dimension on Journal Entries. <em>Custom JS override applied in this repo.</em></p>
+        <div class="meta">
+          <span>← Project Template</span><span>← Customer</span><span>← User (project user)</span>
+          <span>→ Task</span><span>→ Timesheet (parent_project)</span><span>→ Journal Entry (dimension)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-proj">Project</span>
+        <h3><a href="http://erp.localhost:8080/app/task" target="_blank">Task</a></h3>
+        <p>A unit of work within a Project. Has status, priority, assigned user, expected hours, and parent task (for subtask hierarchies). Time is logged against Tasks via Timesheets. Expense Claims can reference a Task. <em>Custom JS override applied in this repo.</em></p>
+        <div class="meta">
+          <span>← Project</span><span>← Task (parent_task, self-reference)</span>
+          <span>→ Timesheet (timesheet detail)</span><span>← Expense Claim (dimension)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-proj">Project</span>
+        <h3><a href="http://erp.localhost:8080/app/timesheet" target="_blank">Timesheet</a></h3>
+        <p>A time log submitted by an employee. Contains detail rows each with Project, Task, Activity Type, hours, billing rate, and costing rate. Billable hours flow to Sales Invoice; costing can feed into Salary Slip for timesheet-based payroll.</p>
+        <div class="meta">
+          <span>← Employee</span><span>← Project</span><span>← Task</span><span>← Activity Cost (rates)</span>
+          <span>→ Sales Invoice (billable hours)</span><span>→ Salary Slip (costing)</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-proj">Project</span>
+        <h3><a href="http://erp.localhost:8080/app/sales-invoice" target="_blank">Sales Invoice</a></h3>
+        <p>The customer-facing billing document. In the projects context, created from billable Timesheet hours. On submission, posts a Journal Entry to the accounts receivable and income accounts.</p>
+        <div class="meta">
+          <span>← Timesheet (billable hours)</span><span>← Customer</span>
+          <span>→ Journal Entry (on submit)</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== ASSETS ===== -->
+<section class="layer asset" id="assets">
+  <div class="layer-header">Asset Management</div>
+  <p style="padding:8px 20px;font-size:12px;color:#e8daef;">Fixed asset register, depreciation, maintenance, and disposal.</p>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Asset Setup — Configuration masters</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-asset">Asset Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/location" target="_blank">Location</a></h3>
+        <p>A physical location where assets are kept (e.g. "Head Office - Server Room", "Warehouse A"). Used on Asset records and as the target location in Asset Movements.</p>
+        <div class="meta"><span>→ Asset (location)</span><span>← Asset Movement (target_location)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-category" target="_blank">Asset Category</a></h3>
+        <p>Groups assets by type (e.g. Computers, Vehicles, Furniture). Defines the depreciation method, useful life, and GL accounts for the category. References a Finance Book for parallel depreciation.</p>
+        <div class="meta"><span>← Finance Book</span><span>→ Asset (asset_category)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset Setup</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-maintenance-team" target="_blank">Maintenance Team</a></h3>
+        <p>A named team responsible for maintaining assets. Contains team members and their roles. Assigned to Asset Maintenance records to track who is responsible for upkeep.</p>
+        <div class="meta"><span>→ Asset Maintenance (maintenance_team)</span></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="sublayer">
+    <div class="sublayer-header">Asset Documents — The fixed asset register and its transactions</div>
+    <div class="nodes">
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset" target="_blank">Asset</a></h3>
+        <p>The core fixed asset record. Contains purchase date, cost, depreciation method, useful life, custodian employee, location, and department. On submission, auto-creates a Depreciation Schedule. <em>Custom JS override applied in this repo.</em></p>
+        <div class="meta">
+          <span>← Asset Category</span><span>← Location</span><span>← Item (item_code)</span><span>← Finance Book</span>
+          <span>← Employee (custodian)</span><span>← Department</span><span>← Cost Center</span><span>← Supplier (owner)</span>
+          <span>→ Depreciation Schedule</span><span>→ Asset Movement</span><span>→ Asset Repair</span>
+          <span>→ Asset Maintenance</span><span>→ Asset Value Adjustment</span><span>→ Asset Capitalization</span>
+        </div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-depreciation-schedule" target="_blank">Depreciation Schedule</a></h3>
+        <p>Auto-generated table of monthly/yearly depreciation entries for an Asset. Each scheduled entry, when processed, creates a Journal Entry posting depreciation expense to the correct GL accounts.</p>
+        <div class="meta"><span>← Asset (auto on submit)</span><span>→ Journal Entry (monthly posting)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-movement" target="_blank">Asset Movement</a></h3>
+        <p>Records the physical transfer of an Asset — between locations, employees, or departments. Updates the Asset's current location and custodian fields on submission.</p>
+        <div class="meta"><span>← Asset</span><span>→ Employee (to_employee)</span><span>→ Location (target_location)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-repair" target="_blank">Asset Repair</a></h3>
+        <p>Records a repair event for an Asset — repair date, cost, failure description, and repair status. If the repair cost is capitalized, creates a Journal Entry to add the cost to the asset's book value.</p>
+        <div class="meta"><span>← Asset</span><span>→ Journal Entry (if capitalized)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-maintenance" target="_blank">Asset Maintenance</a></h3>
+        <p>A recurring maintenance schedule for an Asset. Defines maintenance tasks, frequency, and the responsible Maintenance Team. Automatically creates Maintenance Log entries as tasks come due.</p>
+        <div class="meta"><span>← Asset</span><span>← Maintenance Team</span><span>→ Asset Maintenance Log</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-maintenance-log" target="_blank">Maintenance Log</a></h3>
+        <p>An individual maintenance task completion record. Auto-created by Asset Maintenance per scheduled task. Contains completion date, maintenance type, and notes.</p>
+        <div class="meta"><span>← Asset Maintenance (auto per task)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-value-adjustment" target="_blank">Value Adjustment</a></h3>
+        <p>Records a write-up or write-down of an Asset's book value (e.g. impairment). On submission, creates a Journal Entry to adjust the asset account and post the gain/loss.</p>
+        <div class="meta"><span>← Asset</span><span>→ Journal Entry (on submit)</span></div>
+      </div>
+
+      <div class="node">
+        <span class="tag tag-asset">Asset</span>
+        <h3><a href="http://erp.localhost:8080/app/asset-capitalization" target="_blank">Asset Capitalization</a></h3>
+        <p>Combines multiple assets or stock items into a single capitalized Asset (e.g. assembling a server from components). The target asset is the resulting capitalized record.</p>
+        <div class="meta"><span>← Asset (target_asset)</span></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ===== ACCOUNTING ===== -->
+<section class="layer acc" id="accounting">
+  <div class="layer-header">Accounting Spine</div>
+  <p style="padding:8px 20px;font-size:12px;color:#fadbd8;">The financial backbone — every module ultimately posts here.</p>
+  <div class="nodes">
+
+    <div class="node">
+      <span class="tag tag-acc">Accounting</span>
+      <h3><a href="http://erp.localhost:8080/app/journal-entry" target="_blank">Journal Entry</a></h3>
+      <p>A double-entry bookkeeping document. The central posting record that every module writes to on submission — payroll, expense claims, asset depreciation, sales invoices, and more. Contains debit/credit rows referencing Accounts, Cost Centers, Departments, and Projects as dimensions.</p>
+      <div class="meta">
+        <span>← Salary Slip (payroll)</span><span>← Expense Claim</span><span>← Sales Invoice</span>
+        <span>← Asset Depreciation Schedule</span><span>← Asset Repair</span><span>← Asset Value Adjustment</span>
+        <span>← Account</span><span>← Cost Center</span><span>← Department</span><span>← Project</span>
+        <span>→ Payment Entry (bank payment)</span><span>→ GL Entry (creates)</span>
+      </div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-acc">Accounting</span>
+      <h3><a href="http://erp.localhost:8080/app/payment-entry" target="_blank">Payment Entry</a></h3>
+      <p>Records an actual bank payment or receipt against a Journal Entry or invoice. Clears outstanding payables/receivables and posts the bank account movement. Used for salary bank transfers after payroll Journal Entries are created.</p>
+      <div class="meta"><span>← Journal Entry (bank payment)</span></div>
+    </div>
+
+    <div class="node">
+      <span class="tag tag-acc">Accounting</span>
+      <h3><a href="http://erp.localhost:8080/app/gl-entry" target="_blank">GL Entry</a></h3>
+      <p>The immutable general ledger row. Auto-created by Journal Entries (and other vouchers). The source of truth for all financial reports — Trial Balance, P&amp;L, Balance Sheet. Never edited directly.</p>
+      <div class="meta"><span>← Journal Entry (creates)</span></div>
+    </div>
+
+  </div>
+</section>
+
+</main>
+
+<footer style="background:#2c3e50;color:#bdc3c7;text-align:center;padding:16px;font-size:12px;margin-top:40px;">
+  Generated from <code>full_system_map_linked.dot</code> · ERPNext + HRMS + Frappe CRM · <a href="full_system_map_linked.svg" style="color:#85c1e9;" target="_blank">View SVG Map</a>
+</footer>
+</main>
+</body>
+</html>
