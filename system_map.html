@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<title>Frappe System Map</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cytoscape/3.28.1/cytoscape.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dagre/0.8.5/dagre.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/cytoscape-dagre@2.5.0/cytoscape-dagre.min.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{display:flex;height:100vh;font-family:'Segoe UI',sans-serif;overflow:hidden;background:#f0f2f5}
+#sidebar{width:200px;min-width:200px;background:#1a1a2e;color:#eee;padding:12px 10px;overflow-y:auto;display:flex;flex-direction:column;gap:3px;z-index:10}
+#sidebar h2{font-size:10px;color:#777;text-transform:uppercase;letter-spacing:1px;margin-bottom:8px}
+.mi{display:flex;align-items:center;gap:7px;padding:5px 8px;border-radius:5px;cursor:pointer;font-size:12px;user-select:none;transition:background .12s}
+.mi:hover,.mi.active{background:#2a2a4e}
+.mi.active{outline:1px solid #444}
+.dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+#main{flex:1;display:flex;flex-direction:column;overflow:hidden}
+#topbar{display:flex;align-items:center;gap:8px;padding:7px 12px;background:#fff;border-bottom:1px solid #ddd;flex-shrink:0}
+#topbar input{flex:1;padding:5px 10px;border:1px solid #ccc;border-radius:5px;font-size:13px;outline:none}
+#topbar input:focus{border-color:#2980b9}
+.btn{padding:4px 11px;border:1px solid #ccc;border-radius:5px;background:#fff;cursor:pointer;font-size:12px;white-space:nowrap}
+.btn:hover{background:#f0f0f0}
+.btn.on{background:#1a1a2e;color:#fff;border-color:#1a1a2e}
+#cy{flex:1}
+/* tooltip */
+#tip{position:fixed;background:#1a1a2e;color:#fff;padding:6px 10px;border-radius:6px;font-size:12px;pointer-events:none;display:none;z-index:100;max-width:200px;line-height:1.5}
+/* info panel */
+#panel{position:absolute;right:0;top:0;width:260px;height:100%;background:#fff;border-left:1px solid #ddd;padding:14px;overflow-y:auto;transform:translateX(100%);transition:transform .22s;z-index:20}
+#panel.open{transform:translateX(0)}
+#panel h3{font-size:14px;font-weight:700;margin-bottom:4px;padding-right:22px}
+.badge{display:inline-block;padding:2px 8px;border-radius:10px;font-size:11px;color:#fff;margin-bottom:10px}
+#panel h4{font-size:10px;color:#999;text-transform:uppercase;margin:10px 0 4px}
+#panel ul{list-style:none}
+#panel li{font-size:12px;padding:3px 0;border-bottom:1px solid #f5f5f5;cursor:pointer;color:#2980b9}
+#panel li:hover{text-decoration:underline}
+#panel li small{color:#aaa;font-size:11px}
+#xbtn{position:absolute;top:10px;right:10px;background:none;border:none;font-size:18px;cursor:pointer;color:#aaa}
+</style>
+</head>
+<body>
+<div id="sidebar">
+  <h2>Modules</h2>
+  <div id="mod-list"></div>
+</div>
+<div id="main" style="position:relative">
+  <div id="topbar">
+    <input id="search" placeholder="Search node…"/>
+    <button class="btn" id="btn-labels">Edge Labels</button>
+    <button class="btn" id="btn-reset">Reset</button>
+    <button class="btn" id="btn-fit">Fit</button>
+  </div>
+  <div id="cy"></div>
+  <div id="tip"></div>
+  <div id="panel">
+    <button id="xbtn">×</button>
+    <h3 id="p-name"></h3>
+    <span id="p-badge" class="badge"></span>
+    <h4>Outgoing</h4><ul id="p-out"></ul>
+    <h4>Incoming</h4><ul id="p-in"></ul>
+  </div>
+</div>
+<script>
+cytoscape.use(cytoscapeDagre);
+
+const MOD_COLOR = {
+  "Global Masters":"#607d8b",
+  "People Masters":"#e67e22",
+  "CRM":"#2980b9",
+  "HR":"#1e8449",
+  "Payroll":"#d68910",
+  "Projects":"#c0392b",
+  "Assets":"#6c3483",
+  "Accounting":"#922b21",
+};
+
+const NM = {
+  Company:"Global Masters",Department:"Global Masters",CostCenter:"Global Masters",
+  Account:"Global Masters",Currency:"Global Masters",FinanceBook:"Global Masters",
+  FiscalYear:"Global Masters",HolidayList:"Global Masters",
+  User:"People Masters",Role:"People Masters",UserPermission:"People Masters",
+  Customer:"People Masters",Supplier:"People Masters",Contact:"People Masters",Item:"People Masters",
+  CRMLeadStatus:"CRM",CRMDealStatus:"CRM",CRMLeadSource:"CRM",CRMIndustry:"CRM",
+  CRMTerritory:"CRM",CRMLostReason:"CRM",CRMProduct:"CRM",CRMSLA:"CRM",
+  CRMHolidayList:"CRM",CRMOrganization:"CRM",CRMLead:"CRM",CRMDeal:"CRM",
+  CRMTask:"CRM",FCRMNote:"CRM",CRMCallLog:"CRM",CRMEmail:"CRM",
+  StaffingPlan:"HR",JobRequisition:"HR",JobOpening:"HR",JobApplicant:"HR",
+  Interview:"HR",InterviewFeedback:"HR",JobOffer:"HR",AppointmentLetter:"HR",
+  Employee:"HR",LeaveType:"HR",LeavePolicy:"HR",LeavePolicyAssignment:"HR",
+  LeaveAllocation:"HR",LeaveApplication:"HR",LeaveLedgerEntry:"HR",
+  LeaveEncashment:"HR",CompensatoryLeaveRequest:"HR",ShiftType:"HR",
+  ShiftAssignment:"HR",ShiftRequest:"HR",EmployeeCheckin:"HR",Attendance:"HR",
+  AttendanceRequest:"HR",KRA:"HR",AppraisalTemplate:"HR",AppraisalCycle:"HR",
+  Goal:"HR",Appraisal:"HR",EmployeeOnboarding:"HR",EmployeeTransfer:"HR",
+  EmployeePromotion:"HR",EmployeeSeparation:"HR",FullFinalStatement:"HR",
+  ExitInterview:"HR",EmployeeAdvance:"HR",ExpenseClaim:"HR",
+  PayrollPeriod:"Payroll",IncomeTaxSlab:"Payroll",SalaryComponent:"Payroll",
+  SalaryStructure:"Payroll",SalaryStructureAssignment:"Payroll",
+  AdditionalSalary:"Payroll",EmployeeIncentive:"Payroll",RetentionBonus:"Payroll",
+  PayrollEntry:"Payroll",SalarySlip:"Payroll",
+  ActivityType:"Projects",ActivityCost:"Projects",ProjectTemplate:"Projects",
+  Project:"Projects",Task:"Projects",Timesheet:"Projects",SalesInvoice:"Projects",
+  Location:"Assets",AssetCategory:"Assets",AssetMaintenanceTeam:"Assets",
+  Asset:"Assets",AssetDepreciationSchedule:"Assets",AssetMovement:"Assets",
+  AssetRepair:"Assets",AssetMaintenance:"Assets",AssetMaintenanceLog:"Assets",
+  AssetValueAdjustment:"Assets",AssetCapitalization:"Assets",
+  JournalEntry:"Accounting",PaymentEntry:"Accounting",GLEntry:"Accounting",
+};
+
+// Exact URLs extracted from full_system_map_linked.dot
+const NODE_URL = {
+  Company:"http://erp.localhost:8080/app/company",
+  Department:"http://erp.localhost:8080/app/department",
+  CostCenter:"http://erp.localhost:8080/app/cost-center",
+  Account:"http://erp.localhost:8080/app/account",
+  Currency:"http://erp.localhost:8080/app/currency",
+  FinanceBook:"http://erp.localhost:8080/app/finance-book",
+  FiscalYear:"http://erp.localhost:8080/app/fiscal-year",
+  HolidayList:"http://erp.localhost:8080/app/holiday-list",
+  User:"http://erp.localhost:8080/app/user",
+  Role:"http://erp.localhost:8080/app/role",
+  UserPermission:"http://erp.localhost:8080/app/user-permission",
+  Customer:"http://erp.localhost:8080/app/customer",
+  Supplier:"http://erp.localhost:8080/app/supplier",
+  Contact:"http://erp.localhost:8080/app/contact",
+  Item:"http://erp.localhost:8080/app/item",
+  CRMLeadStatus:"http://erp.localhost:8080/app/crm-lead-status",
+  CRMDealStatus:"http://erp.localhost:8080/app/crm-deal-status",
+  CRMLeadSource:"http://erp.localhost:8080/app/crm-lead-source",
+  CRMIndustry:"http://erp.localhost:8080/app/crm-industry",
+  CRMTerritory:"http://erp.localhost:8080/app/crm-territory",
+  CRMLostReason:"http://erp.localhost:8080/app/crm-lost-reason",
+  CRMProduct:"http://erp.localhost:8080/app/crm-product",
+  CRMSLA:"http://erp.localhost:8080/app/crm-service-level-agreement",
+  CRMHolidayList:"http://erp.localhost:8080/app/crm-holiday-list",
+  CRMOrganization:"http://erp.localhost:8080/app/frappe-crm/organizations",
+  CRMLead:"http://erp.localhost:8080/app/frappe-crm/leads",
+  CRMDeal:"http://erp.localhost:8080/app/frappe-crm/deals",
+  CRMTask:"http://erp.localhost:8080/app/crm-task",
+  FCRMNote:"http://erp.localhost:8080/app/fcrm-note",
+  CRMCallLog:"http://erp.localhost:8080/app/crm-call-log",
+  CRMEmail:"http://erp.localhost:8080/app/communication",
+  StaffingPlan:"http://erp.localhost:8080/app/staffing-plan",
+  JobRequisition:"http://erp.localhost:8080/app/job-requisition",
+  JobOpening:"http://erp.localhost:8080/app/job-opening",
+  JobApplicant:"http://erp.localhost:8080/app/job-applicant",
+  Interview:"http://erp.localhost:8080/app/interview",
+  InterviewFeedback:"http://erp.localhost:8080/app/interview-feedback",
+  JobOffer:"http://erp.localhost:8080/app/job-offer",
+  AppointmentLetter:"http://erp.localhost:8080/app/appointment-letter",
+  Employee:"http://erp.localhost:8080/app/employee",
+  LeaveType:"http://erp.localhost:8080/app/leave-type",
+  LeavePolicy:"http://erp.localhost:8080/app/leave-policy",
+  LeavePolicyAssignment:"http://erp.localhost:8080/app/leave-policy-assignment",
+  LeaveAllocation:"http://erp.localhost:8080/app/leave-allocation",
+  LeaveApplication:"http://erp.localhost:8080/app/leave-application",
+  LeaveLedgerEntry:"http://erp.localhost:8080/app/leave-ledger-entry",
+  LeaveEncashment:"http://erp.localhost:8080/app/leave-encashment",
+  CompensatoryLeaveRequest:"http://erp.localhost:8080/app/compensatory-leave-request",
+  ShiftType:"http://erp.localhost:8080/app/shift-type",
+  ShiftAssignment:"http://erp.localhost:8080/app/shift-assignment",
+  ShiftRequest:"http://erp.localhost:8080/app/shift-request",
+  EmployeeCheckin:"http://erp.localhost:8080/app/employee-checkin",
+  Attendance:"http://erp.localhost:8080/app/attendance",
+  AttendanceRequest:"http://erp.localhost:8080/app/attendance-request",
+  KRA:"http://erp.localhost:8080/app/kra",
+  AppraisalTemplate:"http://erp.localhost:8080/app/appraisal-template",
+  AppraisalCycle:"http://erp.localhost:8080/app/appraisal-cycle",
+  Goal:"http://erp.localhost:8080/app/goal",
+  Appraisal:"http://erp.localhost:8080/app/appraisal",
+  EmployeeOnboarding:"http://erp.localhost:8080/app/employee-onboarding",
+  EmployeeTransfer:"http://erp.localhost:8080/app/employee-transfer",
+  EmployeePromotion:"http://erp.localhost:8080/app/employee-promotion",
+  EmployeeSeparation:"http://erp.localhost:8080/app/employee-separation",
+  FullFinalStatement:"http://erp.localhost:8080/app/full-and-final-statement",
+  ExitInterview:"http://erp.localhost:8080/app/exit-interview",
+  EmployeeAdvance:"http://erp.localhost:8080/app/employee-advance",
+  ExpenseClaim:"http://erp.localhost:8080/app/expense-claim",
+  PayrollPeriod:"http://erp.localhost:8080/app/payroll-period",
+  IncomeTaxSlab:"http://erp.localhost:8080/app/income-tax-slab",
+  SalaryComponent:"http://erp.localhost:8080/app/salary-component",
+  SalaryStructure:"http://erp.localhost:8080/app/salary-structure",
+  SalaryStructureAssignment:"http://erp.localhost:8080/app/salary-structure-assignment",
+  AdditionalSalary:"http://erp.localhost:8080/app/additional-salary",
+  EmployeeIncentive:"http://erp.localhost:8080/app/employee-incentive",
+  RetentionBonus:"http://erp.localhost:8080/app/retention-bonus",
+  PayrollEntry:"http://erp.localhost:8080/app/payroll-entry",
+  SalarySlip:"http://erp.localhost:8080/app/salary-slip",
+  ActivityType:"http://erp.localhost:8080/app/activity-type",
+  ActivityCost:"http://erp.localhost:8080/app/activity-cost",
+  ProjectTemplate:"http://erp.localhost:8080/app/project-template",
+  Project:"http://erp.localhost:8080/app/project",
+  Task:"http://erp.localhost:8080/app/task",
+  Timesheet:"http://erp.localhost:8080/app/timesheet",
+  SalesInvoice:"http://erp.localhost:8080/app/sales-invoice",
+  Location:"http://erp.localhost:8080/app/location",
+  AssetCategory:"http://erp.localhost:8080/app/asset-category",
+  AssetMaintenanceTeam:"http://erp.localhost:8080/app/asset-maintenance-team",
+  Asset:"http://erp.localhost:8080/app/asset",
+  AssetDepreciationSchedule:"http://erp.localhost:8080/app/asset-depreciation-schedule",
+  AssetMovement:"http://erp.localhost:8080/app/asset-movement",
+  AssetRepair:"http://erp.localhost:8080/app/asset-repair",
+  AssetMaintenance:"http://erp.localhost:8080/app/asset-maintenance",
+  AssetMaintenanceLog:"http://erp.localhost:8080/app/asset-maintenance-log",
+  AssetValueAdjustment:"http://erp.localhost:8080/app/asset-value-adjustment",
+  AssetCapitalization:"http://erp.localhost:8080/app/asset-capitalization",
+  JournalEntry:"http://erp.localhost:8080/app/journal-entry",
+  PaymentEntry:"http://erp.localhost:8080/app/payment-entry",
+  GLEntry:"http://erp.localhost:8080/app/gl-entry",
+};
+
+const EDGES_RAW = [
+  ["Company","Department",""],["Company","CostCenter",""],["Company","Account",""],
+  ["Company","FiscalYear",""],["HolidayList","ShiftType",""],["HolidayList","LeaveType",""],
+  ["Currency","IncomeTaxSlab",""],["Currency","SalaryStructure",""],
+  ["FinanceBook","AssetCategory",""],["FinanceBook","Asset",""],
+  ["User","Role","has role"],["User","UserPermission","row-level security"],
+  ["User","Employee","user_id"],["User","CRMLead","lead_owner"],
+  ["User","CRMDeal","deal_owner"],["User","LeaveApplication","leave_approver"],
+  ["User","ExpenseClaim","expense_approver"],["User","Interview","interviewer"],
+  ["User","Project","project user"],["User","CRMTask","assigned_to"],
+  ["Customer","Project","customer"],["Customer","SalesInvoice","billed to"],
+  ["Item","Asset","item_code"],["Supplier","Asset","asset_owner"],
+  ["CRMLeadStatus","CRMLead","status"],["CRMDealStatus","CRMDeal","status"],
+  ["CRMLeadSource","CRMLead","source"],["CRMLeadSource","CRMDeal","source"],
+  ["CRMIndustry","CRMLead","industry"],["CRMIndustry","CRMDeal","industry"],
+  ["CRMTerritory","CRMLead","territory"],["CRMTerritory","CRMDeal","territory"],
+  ["CRMLostReason","CRMLead","lost_reason"],["CRMLostReason","CRMDeal","lost_reason"],
+  ["CRMProduct","CRMLead","products table"],["CRMProduct","CRMDeal","products table"],
+  ["CRMSLA","CRMLead","sla"],["CRMSLA","CRMDeal","sla"],
+  ["CRMHolidayList","CRMSLA","holiday_list"],["CRMOrganization","CRMDeal","organization"],
+  ["Contact","CRMDeal","contacts table"],
+  ["CRMLead","CRMTask","reference"],["CRMLead","FCRMNote","reference"],
+  ["CRMLead","CRMCallLog","reference"],["CRMLead","CRMEmail","reference"],
+  ["CRMDeal","CRMTask","reference"],["CRMDeal","FCRMNote","reference"],
+  ["CRMDeal","CRMCallLog","reference"],["CRMDeal","CRMEmail","reference"],
+  ["CRMLead","CRMDeal","Convert"],["CRMDeal","Customer","sync to ERPNext"],
+  ["StaffingPlan","JobRequisition","raises"],["JobRequisition","JobOpening","creates"],
+  ["JobOpening","JobApplicant","applied to"],["JobApplicant","Interview","scheduled for"],
+  ["Interview","InterviewFeedback","per interviewer"],["InterviewFeedback","JobOffer","leads to"],
+  ["JobOffer","AppointmentLetter","generates"],["JobOffer","Employee","creates"],
+  ["JobOffer","EmployeeOnboarding","triggers"],
+  ["LeaveType","LeavePolicy","policy detail"],["LeavePolicy","LeavePolicyAssignment","assigned via"],
+  ["Employee","LeavePolicyAssignment","employee"],["LeavePolicyAssignment","LeaveAllocation","auto-creates"],
+  ["LeaveAllocation","LeaveApplication","balance used by"],["LeaveApplication","LeaveLedgerEntry","auto-creates"],
+  ["LeaveApplication","Attendance","leave_application"],["LeaveApplication","SalarySlip","lwp days"],
+  ["CompensatoryLeaveRequest","LeaveAllocation","creates"],["LeaveEncashment","SalarySlip","via Additional Salary"],
+  ["Employee","LeaveApplication","employee"],
+  ["ShiftType","ShiftAssignment","assigned via"],["Employee","ShiftAssignment","employee"],
+  ["ShiftRequest","ShiftAssignment","on approval"],["Employee","EmployeeCheckin","employee"],
+  ["ShiftType","EmployeeCheckin","shift (auto-detected)"],["EmployeeCheckin","Attendance","auto-creates"],
+  ["AttendanceRequest","Attendance","regularizes"],["Employee","Attendance","employee"],
+  ["Attendance","SalarySlip","payment_days calc"],
+  ["KRA","AppraisalTemplate","template goal"],["AppraisalTemplate","AppraisalCycle","used in"],
+  ["Employee","AppraisalCycle","appraisee"],["AppraisalCycle","Goal","goals set in"],
+  ["Goal","Appraisal","scored in"],["AppraisalCycle","Appraisal","generates"],
+  ["Employee","EmployeeOnboarding","employee"],["Employee","EmployeeTransfer","employee"],
+  ["Employee","EmployeePromotion","employee"],["Employee","EmployeeSeparation","employee"],
+  ["EmployeeSeparation","FullFinalStatement","triggers"],["EmployeeSeparation","ExitInterview","triggers"],
+  ["FullFinalStatement","Asset","asset return"],
+  ["Employee","EmployeeAdvance","employee"],["Employee","ExpenseClaim","employee"],
+  ["EmployeeAdvance","ExpenseClaim","advance settled in"],["ExpenseClaim","JournalEntry","on submit"],
+  ["ExpenseClaim","Project","project"],["ExpenseClaim","Task","task"],
+  ["SalaryComponent","SalaryStructure","earnings/deductions"],
+  ["SalaryStructure","SalaryStructureAssignment","assigned via"],
+  ["Employee","SalaryStructureAssignment","employee"],["IncomeTaxSlab","SalaryStructureAssignment","tax slab"],
+  ["PayrollPeriod","PayrollEntry","period"],["SalaryStructureAssignment","PayrollEntry","used by"],
+  ["AdditionalSalary","SalarySlip","pulled in"],["EmployeeIncentive","SalarySlip","pulled in"],
+  ["RetentionBonus","SalarySlip","pulled in"],["PayrollEntry","SalarySlip","creates"],
+  ["Employee","SalarySlip","employee"],["Department","PayrollEntry","filter"],
+  ["CostCenter","PayrollEntry","cost_center"],["SalarySlip","JournalEntry","on submit"],
+  ["JournalEntry","PaymentEntry","bank payment"],["JournalEntry","GLEntry","creates"],
+  ["ActivityType","ActivityCost","rates per employee"],["ActivityCost","Timesheet","fetches rates"],
+  ["Employee","ActivityCost","employee"],["ProjectTemplate","Project","creates tasks from"],
+  ["Project","Task","has tasks"],["Task","Task","parent_task"],
+  ["Employee","Timesheet","employee"],["Project","Timesheet","parent_project"],
+  ["Task","Timesheet","timesheet detail"],["Timesheet","SalarySlip","timesheet costing"],
+  ["Timesheet","SalesInvoice","billable hours"],["SalesInvoice","JournalEntry","on submit"],
+  ["AssetCategory","Asset","asset_category"],["Location","Asset","location"],
+  ["Employee","Asset","custodian"],["Department","Asset","department"],
+  ["CostCenter","Asset","cost_center"],["AssetMaintenanceTeam","AssetMaintenance","maintenance_team"],
+  ["Asset","AssetDepreciationSchedule","auto on submit"],
+  ["AssetDepreciationSchedule","JournalEntry","monthly posting"],
+  ["Asset","AssetMovement","asset"],["AssetMovement","Employee","to_employee"],
+  ["AssetMovement","Location","target_location"],["Asset","AssetRepair","asset"],
+  ["AssetRepair","JournalEntry","if capitalized"],["Asset","AssetMaintenance","asset"],
+  ["AssetMaintenance","AssetMaintenanceLog","auto per task"],
+  ["Asset","AssetValueAdjustment","asset"],["AssetValueAdjustment","JournalEntry","on submit"],
+  ["Asset","AssetCapitalization","target_asset"],
+  ["Account","JournalEntry","accounts table"],["JournalEntry","GLEntry","creates"],
+  ["CostCenter","JournalEntry","dimension"],["Department","JournalEntry","dimension"],
+  ["Project","JournalEntry","dimension"],["CostCenter","SalarySlip","via SSA"],
+  ["CostCenter","ExpenseClaim","cost_center"],["CostCenter","Asset","cost_center"],
+  ["Department","Employee","department"],["Department","SalarySlip","via Payroll Entry"],
+];
+
+// Build cytoscape elements
+const elements = [];
+
+// nodes
+Object.keys(NM).forEach(id => {
+  const mod = NM[id];
+  elements.push({
+    data: { id, label: id, module: mod, color: MOD_COLOR[mod], url: NODE_URL[id] || '' }
+  });
+});
+
+// edges — deduplicate same source+target by curving
+const edgeCount = {};
+EDGES_RAW.forEach(([s,t,lbl], i) => {
+  const key = s+'→'+t;
+  edgeCount[key] = (edgeCount[key]||0)+1;
+  elements.push({
+    data: {
+      id: `e${i}`, source: s, target: t, label: lbl,
+      color: MOD_COLOR[NM[s]] || '#999',
+      curve: edgeCount[key] > 1 ? 'unbundled-bezier' : 'bezier',
+    }
+  });
+});
+
+const cy = cytoscape({
+  container: document.getElementById('cy'),
+  elements,
+  style: [
+    {
+      selector: 'node',
+      style: {
+        'background-color': 'data(color)',
+        'label': 'data(label)',
+        'color': '#222',
+        'font-size': '10px',
+        'text-valign': 'bottom',
+        'text-halign': 'center',
+        'text-margin-y': '4px',
+        'width': 30, 'height': 30,
+        'border-width': 2, 'border-color': '#fff',
+        'text-background-color': '#f0f2f5',
+        'text-background-opacity': 0.85,
+        'text-background-padding': '2px',
+        'text-background-shape': 'roundrectangle',
+        'cursor': 'pointer',
+      }
+    },
+    {
+      selector: 'edge',
+      style: {
+        'width': 1.5,
+        'line-color': 'data(color)',
+        'target-arrow-color': 'data(color)',
+        'target-arrow-shape': 'triangle',
+        'arrow-scale': 0.8,
+        'curve-style': 'bezier',
+        'label': '',           // hidden by default
+        'font-size': '9px',
+        'color': '#555',
+        'text-rotation': 'autorotate',
+        'text-background-color': '#fff',
+        'text-background-opacity': 0.9,
+        'text-background-padding': '2px',
+        'text-background-shape': 'roundrectangle',
+        'opacity': 0.7,
+      }
+    },
+    { selector: 'node.dim', style: { opacity: 0.08 } },
+    { selector: 'edge.dim', style: { opacity: 0.04 } },
+    { selector: 'node.hl',  style: { 'border-width': 4, 'border-color': '#f1c40f', opacity: 1 } },
+    { selector: 'edge.hl',  style: { 'line-color': '#f1c40f', 'target-arrow-color': '#f1c40f', width: 3, opacity: 1 } },
+    { selector: 'node.src', style: { 'border-width': 4, 'border-color': '#e67e22', opacity: 1 } },
+    { selector: 'node.tgt', style: { 'border-width': 4, 'border-color': '#27ae60', opacity: 1 } },
+    { selector: 'node.found', style: { 'border-width': 4, 'border-color': '#e74c3c', opacity: 1 } },
+  ],
+  layout: {
+    name: 'dagre',
+    rankDir: 'LR',
+    nodeSep: 50,
+    rankSep: 120,
+    edgeSep: 10,
+    ranker: 'network-simplex',
+    animate: false,
+  },
+  wheelSensitivity: 0.3,
+});
+
+// ── EDGE LABELS TOGGLE ────────────────────────────────────────────────────────
+let labelsOn = false;
+document.getElementById('btn-labels').addEventListener('click', function(){
+  labelsOn = !labelsOn;
+  cy.edges().style('label', labelsOn ? 'data(label)' : '');
+  this.classList.toggle('on', labelsOn);
+  this.textContent = labelsOn ? 'Labels ✓' : 'Edge Labels';
+});
+
+// ── FIT ───────────────────────────────────────────────────────────────────────
+document.getElementById('btn-fit').addEventListener('click', () => cy.fit(undefined, 40));
+
+// ── RESET ─────────────────────────────────────────────────────────────────────
+function resetAll() {
+  cy.elements().removeClass('dim hl src tgt found');
+  document.querySelectorAll('.mi').forEach(el => el.classList.remove('active'));
+  document.getElementById('search').value = '';
+  closePanel();
+}
+document.getElementById('btn-reset').addEventListener('click', resetAll);
+cy.on('tap', e => { if(e.target === cy) resetAll(); });
+
+// ── NODE CLICK → info panel ───────────────────────────────────────────────────
+cy.on('tap', 'node', function(e){
+  const node = e.target;
+  const id = node.id();
+  const mod = node.data('module');
+
+  document.getElementById('p-name').textContent = id;
+  const badge = document.getElementById('p-badge');
+  badge.textContent = mod; badge.style.background = MOD_COLOR[mod];
+
+  const mkList = (edges, ulId, dir) => {
+    const ul = document.getElementById(ulId); ul.innerHTML = '';
+    if(!edges.length){ ul.innerHTML='<li style="color:#aaa;cursor:default">—</li>'; return; }
+    edges.forEach(edge => {
+      const other = dir==='out' ? edge.target() : edge.source();
+      const lbl = edge.data('label');
+      const li = document.createElement('li');
+      li.innerHTML = `${other.id()}${lbl ? ` <small>(${lbl})</small>` : ''}`;
+      li.onclick = () => { cy.animate({fit:{eles:other,padding:80}},{duration:400}); };
+      ul.appendChild(li);
+    });
+  };
+  mkList(node.outgoers('edge'), 'p-out', 'out');
+  mkList(node.incomers('edge'), 'p-in', 'in');
+  document.getElementById('panel').classList.add('open');
+});
+
+// ── EDGE CLICK → highlight + pan to target ───────────────────────────────────
+cy.on('tap', 'edge', function(e){
+  resetAll();
+  const edge = e.target;
+  const src = edge.source(), tgt = edge.target();
+  cy.elements().addClass('dim');
+  edge.removeClass('dim').addClass('hl');
+  src.removeClass('dim').addClass('src');
+  tgt.removeClass('dim').addClass('tgt');
+  cy.animate({ fit: { eles: tgt, padding: 120 } }, { duration: 500 });
+});
+
+// ── TOOLTIP on hover ──────────────────────────────────────────────────────────
+const tip = document.getElementById('tip');
+cy.on('mouseover', 'edge', function(e){
+  const lbl = e.target.data('label');
+  if(!lbl) return;
+  tip.textContent = lbl;
+  tip.style.display = 'block';
+});
+cy.on('mousemove', 'edge', function(e){
+  tip.style.left = (e.originalEvent.clientX+12)+'px';
+  tip.style.top  = (e.originalEvent.clientY+12)+'px';
+});
+cy.on('mouseout', 'edge', () => tip.style.display='none');
+
+// ── DOUBLE-CLICK node → open Frappe URL ──────────────────────────────────────
+cy.on('dblclick', 'node', function(e){
+  window.open(e.target.data('url'), '_blank');
+});
+
+// ── SEARCH ────────────────────────────────────────────────────────────────────
+document.getElementById('search').addEventListener('input', function(){
+  const q = this.value.trim().toLowerCase();
+  cy.elements().removeClass('dim found');
+  if(!q) return;
+  cy.nodes().forEach(n => {
+    if(!n.id().toLowerCase().includes(q)) n.addClass('dim');
+    else if(n.id().toLowerCase()===q) n.addClass('found');
+  });
+  cy.edges().forEach(e => {
+    if(!e.source().id().toLowerCase().includes(q) && !e.target().id().toLowerCase().includes(q))
+      e.addClass('dim');
+  });
+  const exact = cy.getElementById(Object.keys(NM).find(n=>n.toLowerCase()===q)||'');
+  if(exact.length) cy.animate({fit:{eles:exact,padding:120}},{duration:400});
+});
+
+// ── SIDEBAR ───────────────────────────────────────────────────────────────────
+const modList = document.getElementById('mod-list');
+Object.entries(MOD_COLOR).forEach(([mod, color]) => {
+  const div = document.createElement('div');
+  div.className='mi'; div.dataset.mod=mod;
+  div.innerHTML=`<span class="dot" style="background:${color}"></span>${mod}`;
+  div.addEventListener('click', function(){
+    const on = this.classList.toggle('active');
+    document.querySelectorAll('.mi').forEach(el=>{ if(el!==this) el.classList.remove('active'); });
+    cy.elements().removeClass('dim');
+    if(!on) return;
+    cy.nodes().forEach(n => { if(n.data('module')!==mod) n.addClass('dim'); });
+    cy.edges().forEach(e => {
+      if(e.source().data('module')!==mod && e.target().data('module')!==mod) e.addClass('dim');
+    });
+    const modNodes = cy.nodes().filter(n=>n.data('module')===mod);
+    if(modNodes.length) cy.animate({fit:{eles:modNodes,padding:60}},{duration:500});
+  });
+  modList.appendChild(div);
+});
+
+function closePanel(){ document.getElementById('panel').classList.remove('open'); }
+document.getElementById('xbtn').addEventListener('click', closePanel);
+</script>
+</body>
+</html>

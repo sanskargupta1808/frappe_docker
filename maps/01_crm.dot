@@ -1,0 +1,80 @@
+digraph CRM {
+    rankdir=TB
+    graph [fontname="Helvetica" fontsize=13 bgcolor="#f0f7ff" nodesep=0.7 ranksep=1.2]
+    node  [fontname="Helvetica" fontsize=11 style="filled,rounded" shape=box]
+    edge  [fontname="Helvetica" fontsize=9]
+
+    // Setup masters — top row
+    { rank=same
+        CRMLeadStatus  [label="Lead Status"   fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-lead-status"]
+        CRMDealStatus  [label="Deal Status"   fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-deal-status"]
+        CRMLeadSource  [label="Lead Source"   fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-lead-source"]
+        CRMIndustry    [label="Industry"      fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-industry"]
+        CRMTerritory   [label="Territory"     fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-territory"]
+        CRMLostReason  [label="Lost Reason"   fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-lost-reason"]
+        CRMProduct     [label="CRM Product"   fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-product"]
+        CRMSLA         [label="SLA"           fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/crm-service-level-agreement"]
+        FCRMSettings   [label="FCRM Settings" fillcolor="#c5dff8" URL="http://erp.localhost:8080/app/fcrm-settings"]
+    }
+
+    // Supporting masters
+    { rank=same
+        CRMOrganization [label="Organization" fillcolor="#d6eaf8" URL="http://erp.localhost:8080/app/frappe-crm/organizations"]
+        CRMHolidayList  [label="CRM Holiday"  fillcolor="#d6eaf8" URL="http://erp.localhost:8080/app/crm-holiday-list"]
+        Contact         [label="Contact"      fillcolor="#d6eaf8" URL="http://erp.localhost:8080/app/contact"]
+    }
+
+    // Core documents
+    { rank=same
+        CRMLead [label="CRM Lead" fillcolor="#2980b9" fontcolor=white URL="http://erp.localhost:8080/app/frappe-crm/leads"]
+        CRMDeal [label="CRM Deal" fillcolor="#1a5276" fontcolor=white URL="http://erp.localhost:8080/app/frappe-crm/deals"]
+    }
+
+    // Activities
+    { rank=same
+        CRMTask    [label="Task"      fillcolor="#ebf5fb" URL="http://erp.localhost:8080/app/crm-task"]
+        FCRMNote   [label="Note"      fillcolor="#ebf5fb" URL="http://erp.localhost:8080/app/fcrm-note"]
+        CRMCallLog [label="Call Log"  fillcolor="#ebf5fb" URL="http://erp.localhost:8080/app/crm-call-log"]
+        CRMEmail   [label="Email"     fillcolor="#ebf5fb" URL="http://erp.localhost:8080/app/communication"]
+    }
+
+    // Dashboard
+    CRMDashboard [label="Dashboard" fillcolor="#d6eaf8" URL="http://erp.localhost:8080/app/frappe-crm/dashboard"]
+
+    // Setup → Documents
+    CRMLeadStatus -> CRMLead [label="status"]
+    CRMDealStatus -> CRMDeal [label="status"]
+    CRMLeadSource -> CRMLead [label="source"]
+    CRMLeadSource -> CRMDeal [label="source"]
+    CRMIndustry   -> CRMLead [label="industry"]
+    CRMIndustry   -> CRMDeal [label="industry"]
+    CRMTerritory  -> CRMLead [label="territory"]
+    CRMTerritory  -> CRMDeal [label="territory"]
+    CRMLostReason -> CRMLead [label="lost_reason"]
+    CRMLostReason -> CRMDeal [label="lost_reason"]
+    CRMProduct    -> CRMLead [label="products"]
+    CRMProduct    -> CRMDeal [label="products"]
+    CRMSLA        -> CRMLead [label="sla"]
+    CRMSLA        -> CRMDeal [label="sla"]
+    CRMHolidayList -> CRMSLA [label="holiday_list"]
+    FCRMSettings  -> CRMLead [label="config"]
+    FCRMSettings  -> CRMDeal [label="config"]
+    CRMOrganization -> CRMDeal [label="organization"]
+    Contact       -> CRMDeal  [label="contacts table"]
+
+    // Lead → Deal
+    CRMLead -> CRMDeal [label="Convert" style=bold color="#e74c3c" penwidth=2]
+
+    // Documents → Activities
+    CRMLead -> CRMTask    [label="ref"]
+    CRMLead -> FCRMNote   [label="ref"]
+    CRMLead -> CRMCallLog [label="ref"]
+    CRMLead -> CRMEmail   [label="ref"]
+    CRMDeal -> CRMTask    [label="ref"]
+    CRMDeal -> FCRMNote   [label="ref"]
+    CRMDeal -> CRMCallLog [label="ref"]
+    CRMDeal -> CRMEmail   [label="ref"]
+
+    CRMDashboard -> CRMLead [label="analytics" style=dashed]
+    CRMDashboard -> CRMDeal [label="analytics" style=dashed]
+}

@@ -1,0 +1,33 @@
+digraph Overview {
+    rankdir=LR
+    graph [fontname="Helvetica" fontsize=14 bgcolor="#f5f5f5" nodesep=1.0 ranksep=2.0]
+    node  [fontname="Helvetica" fontsize=12 style="filled,rounded" shape=box width=1.8 height=0.6]
+    edge  [fontname="Helvetica" fontsize=10]
+
+    CORE     [label="Core\n(Company, Dept, Accounts)" fillcolor="#d0d0d0" URL="http://erp.localhost:8080/app/company"]
+    USERS    [label="Users & Permissions"              fillcolor="#fdebd0" URL="http://erp.localhost:8080/app/user"]
+    CRM      [label="Frappe CRM\n(Leads & Deals)"      fillcolor="#d6eaf8" URL="http://erp.localhost:8080/app/frappe-crm"]
+    HR       [label="HR\n(Employee Lifecycle)"         fillcolor="#d5f5e3" URL="http://erp.localhost:8080/app/employee"]
+    PAYROLL  [label="Payroll\n(Salary & Tax)"          fillcolor="#fef9e7" URL="http://erp.localhost:8080/app/payroll-entry"]
+    PROJECTS [label="Projects\n(Tasks & Timesheets)"   fillcolor="#fce4d6" URL="http://erp.localhost:8080/app/project"]
+    ASSETS   [label="Assets\n(Fixed Assets)"           fillcolor="#e8daef" URL="http://erp.localhost:8080/app/asset"]
+    ACCOUNTS [label="Accounting\n(GL & Journals)"      fillcolor="#fadbd8" URL="http://erp.localhost:8080/app/journal-entry"]
+
+    CORE     -> HR       [label="Company, Dept, Cost Center"]
+    CORE     -> PAYROLL  [label="Company, Accounts"]
+    CORE     -> PROJECTS [label="Company, Cost Center"]
+    CORE     -> ASSETS   [label="Company, Finance Book"]
+    CORE     -> ACCOUNTS [label="Chart of Accounts"]
+    USERS    -> CRM      [label="Lead/Deal Owner"]
+    USERS    -> HR       [label="user_id → Employee, Approvers"]
+    USERS    -> PROJECTS [label="Project Members"]
+    CRM      -> HR       [label="Job Applicant → Employee"]
+    HR       -> PAYROLL  [label="Employee, Attendance, Leave"]
+    HR       -> PROJECTS [label="Employee → Timesheet"]
+    HR       -> ASSETS   [label="Custodian, Full & Final"]
+    HR       -> ACCOUNTS [label="Expense Claim → Journal Entry"]
+    PAYROLL  -> ACCOUNTS [label="Salary Slip → Journal Entry"]
+    PROJECTS -> ACCOUNTS [label="Sales Invoice → Journal Entry"]
+    PROJECTS -> PAYROLL  [label="Timesheet → Salary Slip"]
+    ASSETS   -> ACCOUNTS [label="Depreciation, Repair, Adjustment"]
+}
