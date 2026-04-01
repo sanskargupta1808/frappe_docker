@@ -1,3 +1,5 @@
+// BASE_URL=http://erp.localhost:8080
+// To retarget all links: sed -i 's|http://erp.localhost:8080|http://YOUR_HOST|g' this_file.dot
 digraph CRM {
     rankdir=TB
     graph [fontname="Helvetica" fontsize=13 bgcolor="#f0f7ff" nodesep=0.7 ranksep=1.2]

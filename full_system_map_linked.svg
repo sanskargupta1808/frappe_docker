@@ -2136,4 +2136,17 @@
 <text xml:space="preserve" text-anchor="middle" x="1293.63" y="-104.4" font-family="Helvetica,sans-Serif" font-size="8.00">creates</text>
 </g>
 </g>
+<script type="text/javascript"><![CDATA[
+(function(){
+  var base = (window.location.hostname !== "")
+    ? window.location.protocol + "//" + window.location.host
+    : "http://erp.localhost:8080";
+  if (base === "http://erp.localhost:8080") return;
+  var ns = "http://www.w3.org/1999/xlink";
+  document.querySelectorAll("a").forEach(function(a){
+    var href = a.getAttributeNS(ns, "href") || a.getAttribute("href") || "";
+    if (href) a.setAttributeNS(ns, "href", href.replace(/^http:\/\/erp\.localhost:8080/, base));
+  });
+})();
+]]></script>
 </svg>

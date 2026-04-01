@@ -1049,5 +1049,16 @@
   Generated from <code>full_system_map_linked.dot</code> · ERPNext + HRMS + Frappe CRM · <a href="full_system_map_linked.svg" style="color:#85c1e9;" target="_blank">View SVG Map</a>
 </footer>
 </main>
+<script>
+(function(){
+  var base = (window.location.hostname !== "")
+    ? window.location.protocol + "//" + window.location.host
+    : "http://erp.localhost:8080";
+  if (base === "http://erp.localhost:8080") return;
+  document.querySelectorAll("a[href]").forEach(function(a){
+    a.href = a.href.replace(/^http:\/\/erp\.localhost:8080/, base);
+  });
+})();
+</script>
 </body>
 </html>

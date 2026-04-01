@@ -502,6 +502,21 @@ Object.entries(MOD_COLOR).forEach(([mod, color]) => {
 
 function closePanel(){ document.getElementById('panel').classList.remove('open'); }
 document.getElementById('xbtn').addEventListener('click', closePanel);
+
+// Dynamic base URL — rewrites all links to match the current host
+(function(){
+  var base = (window.location.hostname !== "")
+    ? window.location.protocol + "//" + window.location.host
+    : "http://erp.localhost:8080";
+  if (base === "http://erp.localhost:8080") return;
+  document.querySelectorAll("a[href]").forEach(function(a){
+    a.href = a.href.replace(/^http:\/\/erp\.localhost:8080/, base);
+  });
+  // Also rewrite data-url attributes used by node click handlers
+  document.querySelectorAll("[data-url]").forEach(function(el){
+    el.dataset.url = el.dataset.url.replace(/^http:\/\/erp\.localhost:8080/, base);
+  });
+})();
 </script>
 </body>
 </html>
