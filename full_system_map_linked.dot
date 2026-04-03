@@ -7,7 +7,7 @@ digraph FullSystemMap {
         splines=spline nodesep=0.6 ranksep=1.4
         bgcolor="#f5f5f5" compound=true
     ]
-    node [fontname="Helvetica" fontsize=10 style="filled,rounded" shape=box margin="0.2,0.1"]
+    node [fontname="Helvetica" fontsize=10 style="filled,rounded" shape=box margin="0.2,0.1" target="_blank"]
     edge [fontname="Helvetica" fontsize=8 color="#666666"]
 
     // =========================================================
@@ -59,8 +59,6 @@ digraph FullSystemMap {
             CRMProduct      [label="CRM Product"   URL="http://erp.localhost:8080/app/crm-product"]
             CRMSLA          [label="SLA"           URL="http://erp.localhost:8080/app/crm-service-level-agreement"]
             CRMHolidayList  [label="CRM Holiday"   URL="http://erp.localhost:8080/app/crm-holiday-list"]
-            CRMOrganization [label="Organization"  URL="http://erp.localhost:8080/app/frappe-crm/organizations"]
-            FCRMSettings    [label="FCRM Settings" URL="http://erp.localhost:8080/app/fcrm-settings"]
         }
 
         subgraph cluster_crm_docs {
@@ -290,10 +288,7 @@ digraph FullSystemMap {
     CRMSLA -> CRMLead [label="sla"]
     CRMSLA -> CRMDeal [label="sla"]
     CRMHolidayList -> CRMSLA [label="holiday_list"]
-    CRMOrganization -> CRMDeal [label="organization"]
     Contact -> CRMDeal [label="contacts table"]
-    FCRMSettings -> CRMLead [label="global config"]
-    FCRMSettings -> CRMDeal [label="global config"]
 
     // =========================================================
     // EDGES — CRM DOCUMENTS → ACTIVITIES

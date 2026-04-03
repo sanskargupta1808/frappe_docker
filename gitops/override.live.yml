@@ -1,0 +1,75 @@
+services:
+  backend:
+    volumes:
+      - ../app_overrides/frappe/list_view.js:/home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+      - ../app_overrides/erpnext/asset.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+      - ../app_overrides/erpnext/fixed_asset_register.py:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+      - ../app_overrides/erpnext/project.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
+      - ../app_overrides/erpnext/task.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
+      - ../app_overrides/hrms/overrides/employee_timesheet.py:/home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+      - ../app_overrides/hrms/job_offer.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+      - ../app_overrides/hrms/job_applicant.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+      - ../app_overrides/hrms/job_applicant.js:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+      - ../app_overrides/hrms/interview.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+      - ../app_overrides/hrms/seed_full_system.py:/home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+      - ../app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py:/home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py
+
+  queue-long:
+    volumes:
+      - ../app_overrides/frappe/list_view.js:/home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+      - ../app_overrides/erpnext/asset.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+      - ../app_overrides/erpnext/fixed_asset_register.py:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+      - ../app_overrides/erpnext/project.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
+      - ../app_overrides/erpnext/task.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
+      - ../app_overrides/hrms/overrides/employee_timesheet.py:/home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+      - ../app_overrides/hrms/job_offer.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+      - ../app_overrides/hrms/job_applicant.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+      - ../app_overrides/hrms/job_applicant.js:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+      - ../app_overrides/hrms/interview.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+      - ../app_overrides/hrms/seed_full_system.py:/home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+      - ../app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py:/home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py
+
+  queue-short:
+    volumes:
+      - ../app_overrides/frappe/list_view.js:/home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+      - ../app_overrides/erpnext/asset.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+      - ../app_overrides/erpnext/fixed_asset_register.py:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+      - ../app_overrides/erpnext/project.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
+      - ../app_overrides/erpnext/task.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
+      - ../app_overrides/hrms/overrides/employee_timesheet.py:/home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+      - ../app_overrides/hrms/job_offer.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+      - ../app_overrides/hrms/job_applicant.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+      - ../app_overrides/hrms/job_applicant.js:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+      - ../app_overrides/hrms/interview.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+      - ../app_overrides/hrms/seed_full_system.py:/home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+      - ../app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py:/home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py
+
+  scheduler:
+    volumes:
+      - ../app_overrides/frappe/list_view.js:/home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+      - ../app_overrides/erpnext/asset.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+      - ../app_overrides/erpnext/fixed_asset_register.py:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+      - ../app_overrides/erpnext/project.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
+      - ../app_overrides/erpnext/task.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
+      - ../app_overrides/hrms/overrides/employee_timesheet.py:/home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+      - ../app_overrides/hrms/job_offer.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+      - ../app_overrides/hrms/job_applicant.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+      - ../app_overrides/hrms/job_applicant.js:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+      - ../app_overrides/hrms/interview.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+      - ../app_overrides/hrms/seed_full_system.py:/home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+      - ../app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py:/home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py
+
+  websocket:
+    volumes:
+      - ../app_overrides/frappe/list_view.js:/home/frappe/frappe-bench/apps/frappe/frappe/public/js/frappe/list/list_view.js
+      - ../app_overrides/erpnext/asset.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/doctype/asset/asset.js
+      - ../app_overrides/erpnext/fixed_asset_register.py:/home/frappe/frappe-bench/apps/erpnext/erpnext/assets/report/fixed_asset_register/fixed_asset_register.py
+      - ../app_overrides/erpnext/project.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/project/project.js
+      - ../app_overrides/erpnext/task.js:/home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
+      - ../app_overrides/hrms/overrides/employee_timesheet.py:/home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
+      - ../app_overrides/hrms/job_offer.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+      - ../app_overrides/hrms/job_applicant.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+      - ../app_overrides/hrms/job_applicant.js:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+      - ../app_overrides/hrms/interview.py:/home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+      - ../app_overrides/hrms/seed_full_system.py:/home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+      - ../app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py:/home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py

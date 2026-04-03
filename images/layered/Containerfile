@@ -38,6 +38,11 @@ COPY --chown=frappe:frappe app_overrides/erpnext/project.js /home/frappe/frappe-
 COPY --chown=frappe:frappe app_overrides/erpnext/task.js /home/frappe/frappe-bench/apps/erpnext/erpnext/projects/doctype/task/task.js
 COPY --chown=frappe:frappe app_overrides/hrms/overrides/employee_timesheet.py /home/frappe/frappe-bench/apps/hrms/hrms/overrides/employee_timesheet.py
 COPY --chown=frappe:frappe app_overrides/hrms/job_offer.py /home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_offer/job_offer.py
+COPY --chown=frappe:frappe app_overrides/hrms/job_applicant.py /home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.py
+COPY --chown=frappe:frappe app_overrides/hrms/job_applicant.js /home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/job_applicant/job_applicant.js
+COPY --chown=frappe:frappe app_overrides/hrms/interview.py /home/frappe/frappe-bench/apps/hrms/hrms/hr/doctype/interview/interview.py
+COPY --chown=frappe:frappe app_overrides/hrms/seed_full_system.py /home/frappe/frappe-bench/apps/hrms/hrms/seed_full_system.py
+COPY --chown=frappe:frappe app_overrides/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py /home/frappe/frappe-bench/apps/crm/crm/fcrm/doctype/crm_holiday_list/crm_holiday_list.py
 
 FROM frappe/base:${FRAPPE_BRANCH} AS backend
 
