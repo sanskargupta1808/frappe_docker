@@ -963,7 +963,8 @@ def _ensure_email_account() -> str | None:
 			"doctype": "Email Account",
 			"email_id": email_id,
 			"email_account_name": "No Reply",
-			"enable_outgoing": 0,
+			"enable_outgoing": 1,
+			"default_outgoing": 1,
 			"enable_incoming": 0,
 		}
 	)
@@ -1843,6 +1844,8 @@ def seed_full_system(records_per_doctype: int = 5):
 	company = _get_default_company()
 	if not company:
 		frappe.throw(_("No company found. Please complete setup first."))
+
+	_ensure_email_account()
 
 	customer_group = _ensure_customer_group()
 	supplier_group = _ensure_supplier_group()

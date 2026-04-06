@@ -2,6 +2,9 @@
 # For license information, please see license.txt
 
 
+import random
+from datetime import date
+
 import frappe
 from frappe import _
 from frappe.model.document import Document
@@ -113,6 +116,16 @@ class JobOffer(Document):
 			if self.applicant_email:
 				employee_doc.personal_email = self.applicant_email
 				employee_doc.prefered_email = self.applicant_email
+			if not employee_doc.gender:
+				genders = frappe.get_all("Gender", pluck="name")
+				if not genders:
+					gender_doc = frappe.get_doc({"doctype": "Gender", "gender": "Male"})
+					gender_doc.insert(ignore_permissions=True)
+					genders = [gender_doc.name]
+				employee_doc.gender = random.choice(genders)
+			if not employee_doc.date_of_birth:
+				years_ago = random.randint(22, 35)
+				employee_doc.date_of_birth = date(date.today().year - years_ago, 1, 1)
 
 			employee_doc.flags.ignore_permissions = True
 			employee_doc.flags.ignore_mandatory = True
