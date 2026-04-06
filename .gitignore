@@ -36,3 +36,8 @@ node_modules
 # Backups and OS files
 backups/
 .DS_Store
+
+# Local bench runtime (do not commit)
+bench/
+tmp_assets/
+backups.zip
