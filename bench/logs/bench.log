@@ -1,0 +1,59 @@
+2026-04-06 10:16:53,947 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv venv env --seed --python /Users/sanskargupta/frappe_docker/.venv-bench/bin/python3.11
+2026-04-06 10:16:54,964 ERROR There was a problem while creating /Users/sanskargupta/frappe_docker/bench
+2026-04-06 10:16:54,965 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench init /Users/sanskargupta/frappe_docker/bench --frappe-branch version-15 --python /Users/sanskargupta/frappe_docker/.venv-bench/bin/python3.11 executed with exit code 1
+2026-04-06 10:17:32,805 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv venv env --seed --python /Users/sanskargupta/frappe_docker/.venv-bench/bin/python3.11
+2026-04-06 10:17:36,280 LOG Getting frappe
+2026-04-06 10:17:36,281 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps && git clone https://github.com/frappe/frappe.git --branch version-15 --depth 1 --origin upstream
+2026-04-06 10:18:21,437 LOG Installing frappe
+2026-04-06 10:18:21,439 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv pip install --quiet --upgrade -e /Users/sanskargupta/frappe_docker/bench/apps/frappe  --python /Users/sanskargupta/frappe_docker/bench/env/bin/python
+2026-04-06 10:19:25,266 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps/frappe && yarn install --check-files
+2026-04-06 10:20:04,217 DEBUG cd /Users/sanskargupta/frappe_docker/bench && bench build
+2026-04-06 10:20:04,445 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench build
+2026-04-06 10:20:17,786 LOG setting up backups
+2026-04-06 10:20:23,057 LOG backups were set up
+2026-04-06 10:20:23,059 INFO Bench /Users/sanskargupta/frappe_docker/bench initialized
+2026-04-06 10:20:35,841 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link /Users/sanskargupta/frappe_docker/erpnext-develop
+2026-04-06 10:20:35,846 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link /Users/sanskargupta/frappe_docker/erpnext-develop executed with exit code 1
+2026-04-06 10:20:47,101 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --help
+2026-04-06 10:21:05,303 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link erpnext /Users/sanskargupta/frappe_docker/erpnext-develop
+2026-04-06 10:21:05,308 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link erpnext /Users/sanskargupta/frappe_docker/erpnext-develop executed with exit code 1
+2026-04-06 10:21:12,165 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link file:///Users/sanskargupta/frappe_docker/erpnext-develop
+2026-04-06 10:21:12,171 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --soft-link file:///Users/sanskargupta/frappe_docker/erpnext-develop executed with exit code 1
+2026-04-06 10:26:28,920 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch version-15 erpnext https://github.com/frappe/erpnext.git
+2026-04-06 10:26:28,935 LOG Getting erpnext
+2026-04-06 10:26:28,936 DEBUG cd ./apps && git clone https://github.com/frappe/erpnext.git --branch version-15 --depth 1 --origin upstream
+2026-04-06 10:26:37,174 LOG Installing erpnext
+2026-04-06 10:26:37,175 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv pip install --quiet --upgrade -e /Users/sanskargupta/frappe_docker/bench/apps/erpnext  --python /Users/sanskargupta/frappe_docker/bench/env/bin/python
+2026-04-06 10:26:45,353 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps/erpnext && yarn install --check-files
+2026-04-06 10:26:47,347 DEBUG bench build --app erpnext
+2026-04-06 10:26:47,477 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench build --app erpnext
+2026-04-06 10:27:09,507 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch version-15 hrms https://github.com/frappe/hrms.git
+2026-04-06 10:27:09,522 LOG Getting hrms
+2026-04-06 10:27:09,522 DEBUG cd ./apps && git clone https://github.com/frappe/hrms.git --branch version-15 --depth 1 --origin upstream
+2026-04-06 10:27:15,418 LOG Installing hrms
+2026-04-06 10:27:15,419 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv pip install --quiet --upgrade -e /Users/sanskargupta/frappe_docker/bench/apps/hrms  --python /Users/sanskargupta/frappe_docker/bench/env/bin/python
+2026-04-06 10:27:16,023 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps/hrms && yarn install --check-files
+2026-04-06 10:28:43,099 DEBUG bench build --app hrms
+2026-04-06 10:28:43,314 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench build --app hrms
+2026-04-06 10:30:45,045 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch version-15 crm https://github.com/frappe/crm.git
+2026-04-06 10:30:45,064 LOG Getting crm
+2026-04-06 10:30:45,064 DEBUG cd ./apps && git clone https://github.com/frappe/crm.git --branch version-15 --depth 1 --origin upstream
+2026-04-06 10:30:45,839 WARNING cd ./apps && git clone https://github.com/frappe/crm.git --branch version-15 --depth 1 --origin upstream executed with exit code 128
+2026-04-06 10:30:45,840 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch version-15 crm https://github.com/frappe/crm.git executed with exit code 1
+2026-04-06 10:31:17,481 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch main crm https://github.com/frappe/crm.git
+2026-04-06 10:31:17,496 LOG Getting crm
+2026-04-06 10:31:17,497 DEBUG cd ./apps && git clone https://github.com/frappe/crm.git --branch main --depth 1 --origin upstream
+2026-04-06 10:31:51,250 LOG Installing crm
+2026-04-06 10:31:51,250 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv pip install --quiet --upgrade -e /Users/sanskargupta/frappe_docker/bench/apps/crm  --python /Users/sanskargupta/frappe_docker/bench/env/bin/python
+2026-04-06 10:31:54,545 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps/crm && yarn install --check-files
+2026-04-06 10:32:27,724 WARNING cd /Users/sanskargupta/frappe_docker/bench/apps/crm && yarn install --check-files executed with exit code 1
+2026-04-06 10:32:27,725 WARNING /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --branch main crm https://github.com/frappe/crm.git executed with exit code 1
+2026-04-06 10:33:28,010 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench get-app --overwrite --branch main crm https://github.com/frappe/crm.git
+2026-04-06 10:33:28,461 INFO App moved from apps/crm to archived/apps/crm-2026-04-06
+2026-04-06 10:33:28,475 LOG Getting crm
+2026-04-06 10:33:28,475 DEBUG cd ./apps && git clone https://github.com/frappe/crm.git --branch main --depth 1 --origin upstream
+2026-04-06 10:33:38,978 LOG Installing crm
+2026-04-06 10:33:38,979 DEBUG cd /Users/sanskargupta/frappe_docker/bench && uv pip install --quiet --upgrade -e /Users/sanskargupta/frappe_docker/bench/apps/crm  --python /Users/sanskargupta/frappe_docker/bench/env/bin/python
+2026-04-06 10:33:39,676 DEBUG cd /Users/sanskargupta/frappe_docker/bench/apps/crm && yarn install --check-files
+2026-04-06 10:33:49,441 DEBUG bench build --app crm
+2026-04-06 10:33:49,637 INFO /Users/sanskargupta/frappe_docker/.venv-bench/bin/bench build --app crm
